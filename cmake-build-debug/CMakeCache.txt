@@ -156,7 +156,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=lchantel_ft_containers
+CMAKE_PROJECT_NAME:STATIC=ft_containers
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -225,6 +225,12 @@ ProcessorCount_cmd_nproc:FILEPATH=/usr/bin/nproc
 
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/sbin/sysctl
+
+//Value Computed by CMake
+ft_containers_BINARY_DIR:STATIC=/home/lchantel/lchantel_ft_containers/cmake-build-debug
+
+//Value Computed by CMake
+ft_containers_SOURCE_DIR:STATIC=/home/lchantel/lchantel_ft_containers
 
 //Value Computed by CMake
 lchantel_ft_containers_BINARY_DIR:STATIC=/home/lchantel/lchantel_ft_containers/cmake-build-debug
