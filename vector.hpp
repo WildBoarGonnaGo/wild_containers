@@ -41,6 +41,8 @@ namespace ft
 				return (_ptr != rhs._ptr);
 			}
 			virtual ~iterator( ) { }
+
+			//friend bool      operator==(const iterator &rhs1, const iterator &rhs2)
 		};
 		class reverse_iterator : public iterator {
 			reverse_iterator( ) { };
@@ -120,6 +122,7 @@ namespace ft
 			}
 			return (*this);
 		}
+
 		iterator						begin() { return (_vector); }
 		const_iterator					begin() const { return (_vector); }	
 		iterator						end() { return (_vector + _size); }
@@ -399,7 +402,26 @@ namespace ft
 		iterator						erase(iterator first, iterator last) {
 			
 		}
-		
+
+		void                            swap(vector<T> &prey) {
+		    vector  *tmp = &prey;
+            vector  *tmp2 = this;
+
+		    if (this != &prey) {
+		        this = &prey;
+                tmp = tmp2;
+		    }
+		}
+
+        void                            clear() {
+            for (int i = 0; i < _size; ++i)
+                _alloc.destroy(_vector + i);
+            _size = 0;
+		}
+
+		Alloc                           get_allocator() const { return (_alloc); }
+
+        friend bool
 		~vector( ) {
 			for (int i = _size - 1; i >= 0 ; --i) {
 				_alloc.destroy(_vector + i);
