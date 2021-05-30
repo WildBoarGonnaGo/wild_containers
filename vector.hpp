@@ -10,8 +10,7 @@
 
 namespace ft
 {
-	template<class T, class Alloc = std::allocator<T> > class vector
-	{
+	template<class T, class Alloc = std::allocator<T> > class vector {
 	public:
 		class iterator {
 		protected:
@@ -68,12 +67,11 @@ namespace ft
 		};
 		typedef const iterator			const_iterator;
 		typedef const reverse_iterator	const_reverse_iterator;
-		
-		explicit vector<T>(Alloc &alloc = Alloc()) : _size(0), _capacity(0),
+		explicit vector(const Alloc &alloc = Alloc()) : _capacity(0), _size(0),
 			_alloc(alloc) { }
-		explicit vector<T>(size_type n, const T &val = T(),
-					 Alloc &alloc = Alloc()) : _size(n),
-					_capacity(n), _alloc(alloc) {
+		explicit vector(size_type n, const T &val = T(),
+					 Alloc &alloc = Alloc()) : _capacity(n),
+					 _size(n), _alloc(alloc) {
 			_vector = alloc.allocate(n);
 			for (int i = 0; i < n; ++i)
 				alloc.contruct(val);
@@ -109,7 +107,6 @@ namespace ft
 			if (this != &rhs)
 				*this = rhs;
 		}
-		
 		vector							&operator=(const vector &rhs) {
 			for (int i = _capacity - 1; i >= 0 ; --i)
 				_alloc.destroy(_vector + i);
@@ -122,7 +119,6 @@ namespace ft
 			}
 			return (*this);
 		}
-
 		iterator						begin() { return (_vector); }
 		const_iterator					begin() const { return (_vector); }	
 		iterator						end() { return (_vector + _size); }
@@ -148,10 +144,10 @@ namespace ft
 				}
 			}
 			else {
-				T		*allocTmp = _alloc.allocate(n);
-				int		idx;
+				size_type	idx = 0;
+				T			*allocTmp = _alloc.allocate(n);
 				
-				for (idx = 0; idx < _size; +idx)
+				for (idx = 0; idx < _size; ++idx)
 					_alloc.constructor(allocTmp + idx, *(_vector + idx));
 				for ( ; idx < n; ++idx)
 					_alloc.constructor(allocTmp + idx, val);
@@ -197,13 +193,13 @@ namespace ft
 		vector							&front() {
 			return (_vector[0]);
 		}
-		vector const					&front(size_type n) const {
+		vector const					&front() const {
 			return (_vector[0]);
 		}
-		vector							&back() {
+		vector							&back( ) {
 			return (_vector[_size - 1]);
 		}
-		vector const					&back(size_type n) const {
+		vector const					&back( ) const {
 			return (_vector[_size - 1]);
 		}
 		void							assign(const_iterator first, const_iterator last) {
@@ -398,11 +394,35 @@ namespace ft
 					return (position);
 				}
 			}
+			return (this->end());
 		}
 		iterator						erase(iterator first, iterator last) {
+			int 		state = 0;
+			iterator	roll;
+			iterator	end;
 			
+			for (int i = 0; i < _size; ++i) {
+				if (first == _vector + i || last == _vector + i
+					|| last > this->end() || first > this->end())
+					++state;
+				if (state == 2) {
+					roll = (first < last) ? first : last;
+					end = (first < last) ? last : first;
+					if (end > this->end())
+						end = this->end();
+					for ( ; roll != end ; ++roll)
+						_alloc.destroy(roll);
+					_size -= end - roll;
+					roll = (first < last) ? first : last;
+					for (int j = 0; j < _size && end != this->end(); ++j)
+						*(roll + j) = *(end + j);
+					if (end == this->end())
+						return (end);
+					return (roll);
+				}
+			}
+			return (this->end());
 		}
-
 		void                            swap(vector<T> &prey) {
 		    vector  *tmp = &prey;
             vector  *tmp2 = this;
@@ -412,21 +432,73 @@ namespace ft
                 tmp = tmp2;
 		    }
 		}
-
         void                            clear() {
             for (int i = 0; i < _size; ++i)
                 _alloc.destroy(_vector + i);
             _size = 0;
 		}
-
 		Alloc                           get_allocator() const { return (_alloc); }
-
-        friend bool
+        friend bool						operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			if (lhs.size() != rhs.size())
+				return (false);
+			for (int i = 0; i < rhs.size(); ++i) {
+				if (lhs._vector[i] != rhs._vector[i])
+					return (false);
+			}
+			return (true);
+		}
+		friend bool						operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			if (lhs.size() == rhs.size())
+				return (false);
+			for (int i = 0; i < rhs.size(); ++i) {
+				if (lhs._vector[i] == rhs._vector[i])
+					return (false);
+			}
+			return (true);
+		}
+		friend bool						operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			size_type 	tmpSize;
+			
+			tmpSize = (lhs < rhs) ? lhs : rhs;
+			if (lhs == rhs)
+				return (false);
+			for (int i = 0; i < tmpSize; ++i) {
+				if (lhs._vector[i] > rhs._vector[i])
+					return (false);
+			}
+			return (true);
+		}
+		friend bool 					operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			return ((lhs == rhs) || (lhs < rhs));
+		}
+		friend bool						operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			size_type 	tmpSize;
+			
+			tmpSize = (lhs > rhs) ? lhs : rhs;
+			if (lhs == rhs)
+				return (false);
+			for (int i = 0; i < tmpSize; ++i) {
+				if (lhs._vector[i] < rhs._vector[i])
+					return (false);
+			}
+			return (true);
+		}
+		friend bool 					operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+			return ((lhs == rhs) || (lhs > rhs));
+		}
+		friend void						swap(vector<T, Alloc> &x, vector<T, Alloc> &y) {
+			vector<T, Alloc> *xPtr = &x;
+			vector<T, Alloc> *yPtr = &y;
+			vector<T, Alloc> *buff = &x;
+			
+			xPtr = yPtr;
+			yPtr = buff;
+		}
 		~vector( ) {
 			for (int i = _size - 1; i >= 0 ; --i) {
 				_alloc.destroy(_vector + i);
 			}
-			_alloc.deallocate(_size);
+			_alloc.deallocate(_vector, _capacity);
 		};
 	private:
 		size_type			_capacity;
@@ -434,6 +506,7 @@ namespace ft
 		Alloc				_alloc;
 		T					*_vector;
 	};
+	
 }
 
 #endif
