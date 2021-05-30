@@ -49,7 +49,6 @@ namespace ft
 				if (this != &rhs)
 					*this = rhs;
 			}
-			
 			reverse_iterator	&operator=(const reverse_iterator &rhs) {
 				this->_ptr = rhs._ptr;
 				return (*this);
@@ -70,11 +69,11 @@ namespace ft
 		explicit vector(const Alloc &alloc = Alloc()) : _capacity(0), _size(0),
 			_alloc(alloc) { }
 		explicit vector(size_type n, const T &val = T(),
-					 Alloc &alloc = Alloc()) : _capacity(n),
+					 const Alloc &alloc = Alloc()) : _capacity(n),
 					 _size(n), _alloc(alloc) {
-			_vector = alloc.allocate(n);
-			for (int i = 0; i < n; ++i)
-				alloc.contruct(val);
+			_vector = _alloc.allocate(n);
+			for (size_type i = 0; i < n; ++i)
+				_alloc.construct(_vector + i, val);
 		};
 		vector(const_iterator first, const_iterator last,
 		 	Alloc &alloc = Alloc()) {
@@ -174,10 +173,10 @@ namespace ft
 				_vector = allocTmp;
 			}
 		}
-		vector							&operator[](size_type n) {
+		T								&operator[](size_type n) {
 			return (*(_vector + n));
 		}
-		vector const					&operator[](size_type n) const {
+		const T							&operator[](size_type n) const {
 			return (*(_vector + n));
 		}
 		vector							&at(size_type n) {
@@ -495,10 +494,10 @@ namespace ft
 			yPtr = buff;
 		}
 		~vector( ) {
-			for (int i = _size - 1; i >= 0 ; --i) {
+			for (size_type i = 0; i < _size; ++i)
 				_alloc.destroy(_vector + i);
-			}
-			_alloc.deallocate(_vector, _capacity);
+			if (_capacity)
+				_alloc.deallocate(_vector, _capacity);
 		};
 	private:
 		size_type			_capacity;
