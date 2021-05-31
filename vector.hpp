@@ -13,12 +13,14 @@ namespace ft
 	template<class T, class Alloc = std::allocator<T> > class vector {
 	public:
 		class iterator {
+		private:
+			iterator() { }
 		protected:
 			T*	_ptr;
 		public:
 			T	&operator*() { return (*_ptr); }
 			T	*operator->() { return (_ptr); }
-			iterator() { }
+			iterator(T *ptr = NULL) : _ptr(ptr) { }
 			iterator(const iterator &rhs) {
 				if (this != &rhs)
 					*this = rhs;
@@ -28,9 +30,9 @@ namespace ft
 				_ptr = rhs._ptr;
 				return (*this);
 			}
-			virtual iterator	operator++(int) const{
-				iterator	tmp = *this;
-				++(*this);
+			virtual iterator	operator++(int) {
+				iterator	tmp(*this);
+				operator++();
 				return (tmp);
 			}
 			bool		operator==(const iterator &rhs) const {
@@ -44,7 +46,10 @@ namespace ft
 			//friend bool      operator==(const iterator &rhs1, const iterator &rhs2)
 		};
 		class reverse_iterator : public iterator {
+		private:
 			reverse_iterator( ) { };
+		public:
+			reverse_iterator(T* ptr = NULL) : iterator(ptr) { }
 			reverse_iterator(const reverse_iterator &rhs) {
 				if (this != &rhs)
 					*this = rhs;
@@ -118,14 +123,14 @@ namespace ft
 			}
 			return (*this);
 		}
-		iterator						begin() { return (_vector); }
-		const_iterator					begin() const { return (_vector); }	
-		iterator						end() { return (_vector + _size); }
-		const_iterator					end() const { return (_vector + _size); }
-		reverse_iterator				rbegin() { return (_vector + _size - 1); }
-		const_reverse_iterator			rbegin() const {return (_vector + _size - 1); }
-		reverse_iterator				rend() { return (_vector); }
-		const_reverse_iterator			rend() const { return (_vector); }
+		iterator						begin() { iterator val(_vector); return (val); }
+		const_iterator					begin() const { const_iterator val(_vector); return (val); }
+		iterator						end() { iterator val(_vector + _size); return (val); }
+		const_iterator					end() const { const_iterator val(_vector + _size); return (val); }
+		reverse_iterator				rbegin() { reverse_iterator val(_vector + _size - 1); return (val); }
+		const_reverse_iterator			rbegin() const {const_reverse_iterator val(_vector + _size - 1); return (val); }
+		reverse_iterator				rend() { reverse_iterator val(_vector); return (val); }
+		const_reverse_iterator			rend() const { const_reverse_iterator val(_vector); return (val); }
 
 		size_type						size() const { return (_size); }
 		size_type						max_size() const { return (_alloc.max_size()); }
