@@ -130,9 +130,18 @@ template <class T> class input_iterator : public base_iterator<T> {
 			}
 			return (*this);
 		}
-		
+		random_access_iterator	operator+(distance n) {
+			random_access_iterator	tmp = this;
+			return (tmp += n);
+		}
+		random_access_iterator	&operator-=(distance n)  { return (this += -n) }
+		random_access_iterator	operator-(distance n) {
+			random_access_iterator	tmp = this;
+			return (tmp -= n);
+		}
+		random_access_iterator	operator[](distance n) { return (*(this + n)); }
 	};
-}
+ }
 
 
 #endif
