@@ -1,6 +1,7 @@
 /*Build user-defined input search tree */
 #include <iostream>
 #include "../ft_queue.hpp"
+#include <vector>
 
 template <class T>struct		userTree {
 		userTree( ) : _size(0) { }
@@ -8,23 +9,22 @@ template <class T>struct		userTree {
     	userTree    			*leftNode;
     	userTree    			*rightNode;
 		size_t const			getSize() const { return (_size); }
-		size_t					setSize();
 	private:
+        size_t const            countNodes() const;
 		size_t					_size;
 };
 
-template<class T>struct			userQueue {
-	T							*data;
-	userQueue					*next;
-
-};
-
-template<class T>size_t			userTree<T>::setSize() {
+template<class T>size_t			userTree<T>::countNodes() {
 	if (!this)
 		return (0);
 	else 
 		return (1 + this->leftNode->setSize()
 			+ this->rightNode->setSize());
+}
+
+template<class T>size_t const   userTree<T>::getSize() const {
+    _size = this->countNodes();
+    return (_size);
 }
 
 template<class T>void    		pushBack(userTree<T> **head, T &data) {
@@ -49,9 +49,20 @@ template<class T>void			insert(userTree<T> **head, T data) {
 
 template<class T>std::ostream	&operator<<(std::ostream &o, userTree<T> const &head) {
 	if (&head) {
-		for (size_t i = 0; i < head->getSize(); i++)
-			o << ' ';
-		o << head->data; 
-		return (operator<<(o, head->leftNode));
+        ft::queue<userTree<T> *>    obj;
+        std::vector<userTree<T> *>  tmpVector;
+
+        obj.push(&head);
+        while (!obj.empty()) {
+            tmpVector.push_back(obj.front());
+            obj.pop;
+            if (obj.front()->leftNode)
+                obj.push(obj.front()->leftNode);
+            if (obj.front()->rightNode)
+                obj.push(obj.front()->rightNode);
+        }
+        for (int i = 0; ; ++i) {
+            size_
+        }
 	}
 }

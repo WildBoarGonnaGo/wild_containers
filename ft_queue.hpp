@@ -19,7 +19,7 @@ namespace ft {
 			value_type			back() { return (c.back()); }
 			value_type const	back() const { return (c.back()); }
 			void				push(const value_type &x) { c.push_back(x); }
-			void				pop() { c.pop(); }
+			void				pop() { c.pop_front(); }
 			friend bool			operator==(const queue &x, const queue&y) { return (x.c == y.c); }
 			friend bool			operator!=(const queue &x, const queue&y) { return (x.c != y.c); }
 			friend bool			operator<(const queue &x, const queue&y) { return (x.c < y.c); }
