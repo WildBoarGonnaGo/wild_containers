@@ -28,32 +28,10 @@ void	Graph::addEdge(int v, int w) {
 	_adj[v].push_back(w);
 }
 
-//Perform BFS given a starting vertex
 void	Graph::BFS(int s) {
-	//Start with all verticies as not visited
-	bool	*visited = new bool[_v];
-	for (size_t i = 0; i < _v; i++)
-		visited[i] = false;
-	//Create a queue for BFS
-	std::list<int>	queue;
-	//
-	visited[s] = true;
-	queue.push_back(s);
-	//Continue until queue is empty 
-	while (!queue.empty()) {
-		//Get the front of the queue and remove it
-		std::cout << "Checking adjacent vecricies for vertex: "
-			<< s << std::endl;
-		for (auto i = _adj[s].begin(); i != _adj[s].end(); ++i) {
-			//We only care about nodes not visited yet
-			if (!visited[*i]) {
-				//Mark as visited
-				std::cout << "Visit and enqueue: "
-					<< *i << std::endl;
-				visited[*i] = true;
-				//Push 
-			}
-		}
-	}
+	std::list<int>	tmp;
+	bool			visit[_v] = { false };
+	
+	visit[s]
 }
 

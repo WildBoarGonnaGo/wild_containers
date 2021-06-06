@@ -23,7 +23,7 @@ namespace ft {
 			friend bool			operator==(const queue &x, const queue&y) { return (x.c == y.c); }
 			friend bool			operator!=(const queue &x, const queue&y) { return (x.c != y.c); }
 			friend bool			operator<(const queue &x, const queue&y) { return (x.c < y.c); }
-			friend bool			operator<=(const queue &x, const queue&y) { return (x.c <= y.c)}
+			friend bool			operator<=(const queue &x, const queue&y) { return (x.c <= y.c); }
 			friend bool			operator>(const queue &x, const queue&y) { return (x.c > y.c); }
 			friend bool			operator>=(const queue &x, const queue&y) { return (x.c >= y.c); }
 	};
