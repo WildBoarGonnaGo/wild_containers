@@ -74,9 +74,8 @@ namespace ft
 			virtual ~iterator( ) { }
 		};
 		class reverse_iterator : public iterator {
-		private:
-			reverse_iterator( ) { };
 		public:
+			reverse_iterator( ) { };
 			//reverse_iterator(T* ptr = NULL) : iterator(ptr) { }
 			typedef typename base_iterator<T>::pointer		pointer;
 
@@ -84,21 +83,21 @@ namespace ft
 				if (this != &rhs)
 					*this = rhs;
 			}
-			reverse_iterator	&operator=(const reverse_iterator &rhs) {
+			reverse_iterator			&operator=(const reverse_iterator &rhs) {
 				this->_ptr = rhs._ptr;
 				return (*this);
 			}
-			reverse_iterator	&operator=(const pointer rhs) {
+			reverse_iterator			&operator=(const pointer rhs) {
 				this->_ptr = rhs;
 				return (*this);
 			}
-			virtual	iterator	&operator++() {
+			virtual	reverse_iterator	&operator++() {
 				--this->_ptr;
 				return (*this);
 			}
-			virtual iterator	operator++(int) const {
-				iterator	tmp = *this;
-				--(*this);
+			virtual reverse_iterator	operator++(int) {
+				reverse_iterator	tmp = *this;
+				operator++();
 				return (tmp);
 			}
 			virtual ~reverse_iterator( ) { }
@@ -161,7 +160,11 @@ namespace ft
 		const_iterator					begin() const { const_iterator val = _vector; return (val); }
 		iterator						end() { iterator val; val = _vector + _size; return (val); }
 		const_iterator					end() const { const_iterator val = _vector + _size; return (val); }
-		reverse_iterator				rbegin() { reverse_iterator val = _vector + _size - 1; return (val); }
+		reverse_iterator				rbegin() { 
+			size_type tmpSize = _size - 1;
+			reverse_iterator val = _vector + tmpSize; 
+			return (val); 
+			}
 		const_reverse_iterator			rbegin() const {const_reverse_iterator val = _vector + _size - 1; return (val); }
 		reverse_iterator				rend() { reverse_iterator val = _vector; return (val); }
 		const_reverse_iterator			rend() const { const_reverse_iterator val = _vector; return (val); }

@@ -100,7 +100,7 @@ template <class T> class input_iterator : virtual public base_iterator<T> {
 			bidirectional_iterator(const bidirectional_iterator &rhs) {
 				if (this != &rhs)
 					*this = rhs;
-			}cp 
+			} 
 			bidirectional_iterator	&operator=(const bidirectional_iterator &rhs) {
 				this->_ptr = rhs._ptr;
 			}
