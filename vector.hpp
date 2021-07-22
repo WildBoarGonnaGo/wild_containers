@@ -14,9 +14,9 @@ namespace ft
 	template<class T, class Alloc = std::allocator<T> > class vector {
 	public:
 		class iterator : public forward_iterator<T> {
-		protected:
-			virtual iterator	&operator--() { --this->_ptr; return (*this); }
-			virtual iterator	operator--(int) {
+		private:
+			iterator	&operator--() { --this->_ptr; return (*this); }
+			iterator	operator--(int) {
 				iterator tmp = *this;
 				operator--();
 				return (tmp);
@@ -73,11 +73,19 @@ namespace ft
 			}
 			virtual ~iterator( ) { }
 		};
-		class reverse_iterator : public iterator {
+		class reverse_iterator : public forward_iterator<T> {
+		private:
+			reverse_iterator	&operator--() { ++this->_ptr; return (*this); }
+			reverse_iterator	operator--(int) {
+				reverse_iterator tmp = *this;
+				operator--();
+				return (tmp);
+			}
 		public:
-			reverse_iterator( ) { };
-			//reverse_iterator(T* ptr = NULL) : iterator(ptr) { }
+			reverse_iterator( ) { }
+			typedef	typename base_iterator<T>::reference	reference;
 			typedef typename base_iterator<T>::pointer		pointer;
+			typedef typename base_iterator<T>::distance		distance;
 
 			reverse_iterator(const reverse_iterator &rhs) {
 				if (this != &rhs)
@@ -91,11 +99,31 @@ namespace ft
 				this->_ptr = rhs;
 				return (*this);
 			}
-			virtual	reverse_iterator	&operator++() {
+			reference					operator*() { return (*this->_ptr); }
+			reverse_iterator			operator+(distance n) {
+				reverse_iterator	tmp = *this;
+				return (tmp -= n);
+			}
+			reverse_iterator			&operator-=(distance n) {
+				return (*this += -n);
+			}
+			reverse_iterator			operator-(distance n) {
+				reverse_iterator	tmp = *this;
+				return (tmp -= n);
+			}
+			bool						operator<(reverse_iterator const &rhs) { return (this->_ptr < rhs._ptr); }
+			bool						operator<=(reverse_iterator const &rhs) {
+				return (*this == rhs || *this < rhs);
+			}
+			bool						operator>(reverse_iterator const &rhs) { return (this->_ptr > rhs._ptr); }
+			bool						operator>=(reverse_iterator const &rhs) {
+				return (*this == rhs || *this > rhs);
+			}
+			virtual	base_iterator<T>	&operator++() {
 				--this->_ptr;
 				return (*this);
 			}
-			virtual reverse_iterator	operator++(int) {
+			virtual base_iterator<T>	operator++(int) {
 				reverse_iterator	tmp = *this;
 				operator++();
 				return (tmp);
@@ -113,46 +141,52 @@ namespace ft
 			for (size_type i = 0; i < n; ++i)
 				_alloc.construct(_vector + i, val);
 		};
-		vector(const_iterator first, const_iterator last,
+		vector(iterator first, iterator last,
 		 	const Alloc &alloc = Alloc()) : _alloc(alloc) {
-			size_type	tmp;
+			size_type	tmp = 0;
 			size_type	i = 0;
 			
-			tmp = static_cast<size_type>(last - first);
+			iterator	iterBackup = first;
+			for (iterator it = first; it != last; ++it)
+				++tmp;
 			if (_size < tmp && tmp < _capacity)
 			{
-				for (int i = _size - 1; i >= 0 ; --i)
+				for (size_type i = _size - 1; i >= 0 ; --i)
 				{
-					alloc.destroy(_vector + i);
-					alloc.construct(_vector + i, *(first + i));
+					_alloc.destroy(_vector + i);
+					_alloc.construct(_vector + i, *(first + i));
 				}
-				_size = last - first;
+				_size = tmp;
 			}
 			if (_capacity < tmp)
 			{
-				alloc.deallocate(_capacity);
+				_alloc.deallocate(_vector, _capacity);
 				_capacity = tmp;
 				_size = _capacity;
-				_vector = alloc.allocate(tmp);
+				_vector = _alloc.allocate(_capacity);
 			}
-			for (first; first != last; ++first) {
-				alloc.construct(_vector + i++, *(first));
+			i = 0;
+			for ( ; iterBackup != last; ++iterBackup) {
+				_alloc.construct(_vector + i++, *(iterBackup));
 			}
-			_alloc = alloc;
 		}
 		vector(const vector &rhs) {
 			if (this != &rhs)
 				*this = rhs;
 		}
 		vector							&operator=(const vector &rhs) {
-			for (int i = _capacity - 1; i >= 0 ; --i)
-				_alloc.destroy(_vector + i);
-			if (_capacity < rhs._capacity)
+			if (_capacity) {
+				for (size_type i = _capacity - 1; i >= 0 ; --i)
+					_alloc.destroy(_vector + i);
+			}
+			if (_capacity < rhs._capacity && _capacity)
 				_alloc.deallocate(_vector, _capacity);
 			_capacity = rhs._capacity;
 			_size = rhs._size;
-			for (int i = 0; i < _size; ++i) {
-				*(_vector + i) = *(rhs._vector + i);
+			_vector = _alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; ++i) {
+				//*(_vector + i) = *(rhs._vector + i);
+				_alloc.construct(_vector + i, rhs[i]);
 			}
 			return (*this);
 		}
@@ -160,20 +194,20 @@ namespace ft
 		const_iterator					begin() const { const_iterator val = _vector; return (val); }
 		iterator						end() { iterator val; val = _vector + _size; return (val); }
 		const_iterator					end() const { const_iterator val = _vector + _size; return (val); }
-		reverse_iterator				rbegin() { 
-			size_type tmpSize = _size - 1;
-			reverse_iterator val = _vector + tmpSize; 
+		reverse_iterator				rbegin() {
+			reverse_iterator val;
+			val = _vector + _size - 1; 
 			return (val); 
 			}
 		const_reverse_iterator			rbegin() const {const_reverse_iterator val = _vector + _size - 1; return (val); }
-		reverse_iterator				rend() { reverse_iterator val = _vector; return (val); }
-		const_reverse_iterator			rend() const { const_reverse_iterator val = _vector; return (val); }
+		reverse_iterator				rend() { reverse_iterator val; val = _vector - 1; return (val); }
+		const_reverse_iterator			rend() const { const_reverse_iterator val = _vector - 1; return (val); }
 
 		size_type						size() const { return (_size); }
 		size_type						max_size() const { return (_alloc.max_size()); }
 		void							resize(size_type n, T val = T()) {
 			if (n < _size) {
-				for (int i = n; i < _size; ++i)
+				for (size_type i = n; i < _size; ++i)
 					_alloc.destroy(_vector + i);
 				_size = n;
 			}
@@ -181,7 +215,7 @@ namespace ft
 			{
 				for (size_type i = _size; i < n; ++i) {
 					_alloc.construct(_vector + i, val);
-					_size += (val != T());
+					++_size;
 				}
 			}
 			else {
