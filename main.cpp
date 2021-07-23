@@ -79,5 +79,17 @@ int main(void)
 	std::cout << std::boolalpha << secDiffVal.empty() << "\033[0m" << std::endl;
 	std::cout << "\033[32;1mIS VECTOR EMPTY (strVector):\033[0m" << "\033[36;1m" <<std::endl;
 	std::cout << std::boolalpha << strVector.empty() << "\033[0m" << std::endl;
+	std::cout << "\033[32;1mCONSTANT ITERATOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	for (ft::vector<int>::const_iterator it2 = third.begin(); it2 != third.end(); ++it2)
+		std::cout << *it2 << ' ';
+	std::cout << "\033[0m" << std::endl;
+	std::cout << "\033[32;1mREVERSE CONSTANT ITERATOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	for (ft::vector<int>::const_reverse_iterator it2 = third.rbegin(); it2 != third.rend(); ++it2)
+		std::cout << *it2 << ' ';
+	std::cout << "\033[0m" << std::endl;
+	std::cout << "\033[32;1mFRONT FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	std::cout << third.front() << "\033[0m" << std::endl;
+	std::cout << "\033[32;1mBACK FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	std::cout << third.back() << "\033[0m" << std::endl;
     return (0);
 }
