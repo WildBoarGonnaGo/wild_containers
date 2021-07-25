@@ -1,21 +1,4 @@
-/snap/clion/152/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lchantel/lchantel_ft_containers
--- The C compiler identification is GNU 9.3.0
--- The CXX compiler identification is GNU 9.3.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
-CMake Error at CMakeLists.txt:8 (add_executable):
-  The target name "$(PROJECT_NAME)" is reserved or not valid for certain
-  CMake features, such as generator expressions, and may result in undefined
-  behavior.
-
-
--- Configuring incomplete, errors occurred!
-See also "/home/lchantel/lchantel_ft_containers/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+/snap/clion/158/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lchantel/lchantel_ft_containers
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lchantel/lchantel_ft_containers/cmake-build-debug

@@ -12,6 +12,7 @@ template <class T> class base_iterator {
 		typedef std::ptrdiff_t	distance;
 		typedef T				value_type;
 
+		base_iterator() { }
 		base_iterator(const base_iterator &rhs) {
 			if (this != &rhs)
 				*this = rhs;
@@ -29,7 +30,6 @@ template <class T> class base_iterator {
 
 		virtual ~base_iterator( ) { };
 	protected:
-		base_iterator( ) { }
 		pointer				_ptr;
 	};	
 
