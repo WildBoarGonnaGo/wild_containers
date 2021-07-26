@@ -72,7 +72,7 @@ namespace ft {
 				return (*this);
 			}
 			reference		operator*() { return (*this->_ptr->_data); }
-			virtual base_iterator		&operator++() {
+			virtual base_iterator<map<key_type, mapped_type> >		&operator++() {
 				if (this->_ptr->_rNode)
 					this = this->_ptr->_rNode;
 				else if (!this->_ptr->_rNode && !this->_ptr->_lNode && this == _head->_rNode)
@@ -81,12 +81,12 @@ namespace ft {
 					this = this->_ptr->_head;
 				return (*this); 
 			}
-			virtual base_iterator		operator++(int) {
+			virtual base_iterator<map<key_type, mapped_type> >		operator++(int) {
 				iterator	tmp = *this;
 				operator++();
 				return (tmp);
 			}
-			virtual base_iterator		&operator--() {
+			iterator		                                        &operator--() {
 				if (this->_ptr->_lNode)
 					this = this->_ptr->_lNode;
 				else if (!this->_ptr->_rNode && !this->_ptr->_lNode && this == _head->_lNode)
@@ -95,7 +95,7 @@ namespace ft {
 					this = this->_ptr->_head;
 				return (*this); 
 			}
-			virtual base_iterator		operator--(int) {
+			iterator		                                        operator--(int) {
 				iterator	tmp = *this;
 				operator++();
 				return (tmp);
@@ -129,8 +129,8 @@ namespace ft {
 				this->_ptr = rhs;
 				return (*this);
 			}
-			reference				operator*() { return (*(this->_ptr->_data); }
-			virtual base_iterator		&operator--() {
+			reference				operator*() { return (*(this->_ptr->_data)); }
+			reverse_iterator		                                &operator--() {
 				if (this->_ptr->_rNode)
 					this = this->_ptr->_rNode;
 				else if (!this->_ptr->_rNode && !this->_ptr->_lNode && this == _head->_rNode)
@@ -139,21 +139,21 @@ namespace ft {
 					this = this->_ptr->_head;
 				return (*this); 
 			}
-			virtual base_iterator		operator--(int) {
+			reverse_iterator		                                operator--(int) {
 				reverse_iterator	tmp = *this;
 				operator++();
 				return (tmp);
 			}
-			virtual base_iterator		&operator++() {
+			virtual base_iterator<map<key_type, mapped_type> >		&operator++() {
 				if (this->_ptr->_lNode)
 					this = this->_ptr->_lNode;
 				else if (!this->_ptr->_rNode && !this->_ptr->_lNode && this == _head->_lNode)
 					return (*this);
 				else
 					this = this->_ptr->_head;
-				return (*this)
+				return (*this);
 			}
-			virtual base_iterator		operator++(int) {
+			virtual base_iterator<map<key_type, mapped_type> >		operator++(int) {
 				reverse_iterator	tmp = *this;
 				operator++();
 				return (tmp);
@@ -201,7 +201,7 @@ namespace ft {
 			map	*res = 0x0;
 		
 			if (!(res = search_key(tmp, k))) {
-				addElement(&tmp, key, &res)
+				addElement(&tmp, k, &res);
 				++_size;
 			}
 			return (res->_data->second);
