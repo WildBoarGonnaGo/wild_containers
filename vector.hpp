@@ -236,8 +236,8 @@ namespace ft
 				_alloc.construct(_vector + i, val);
 		};
 		vector(iterator first, iterator last,
-		 	const Alloc &alloc = Alloc()) : _alloc(alloc), _vector(NULL),
-		 	_capacity(0), _size(0) {
+		 	const Alloc &alloc = Alloc()) : 
+		 	_capacity(0), _size(0), _alloc(alloc), _vector(NULL) {
 			size_type	tmp = 0;
 			size_type	i = 0;
 			
@@ -251,7 +251,7 @@ namespace ft
 			}
 		}
 		vector(const vector &rhs, const Alloc &alloc = Alloc()) :
-			_vector(0x0), _size(0), _alloc(alloc), _capacity(0) {
+			_capacity(0), _size(0), _alloc(alloc), _vector(0x0) {
 			if (this != &rhs)
 				*this = rhs;
 		}
@@ -372,7 +372,7 @@ namespace ft
 		}
 		void							assign(iterator first, iterator last) {
 			size_type	    tempSize = 0;
-			T*			    allocTemp;
+			//T*			    allocTemp;
 			iterator        frstIterator = first;
 
 			for ( ; first != last; ++first)
@@ -395,7 +395,7 @@ namespace ft
 			}
 		}
 		void							assign(size_type n, const T &val) {
-			T	*allocTemp;
+			//T	*allocTemp;
 
 			if (n < _capacity) {
 				size_t  destroySize = (_size < n) ? _size : n;
@@ -414,7 +414,6 @@ namespace ft
 			}
 		}
 		void							push_back(const T &val) {
-			size_type	tmp = _capacity;
  
 			if (_capacity && _size < _capacity)
 				_alloc.construct(_vector + _size++, val);
@@ -427,35 +426,34 @@ namespace ft
 			if (_size > 0) {
 				_alloc.destroy(_vector + _size - 1);
 				--_size;
-			}
-				 
+			}				 
 		}
 		iterator						insert(iterator position, const T &val) {
 			T*	allocTmp;
-			int	pos;
+			size_type	pos;
 			
 			if (_size < _capacity) {
-				for (int i = 0; i < _size; ++i) {
+				for (size_type i = 0; i < _size; ++i) {
 					if (position == _vector + i) {
-						for (int j = position - _vector + 1; j < _size - 1; ++j)
+						for (size_type j = position - _vector + 1; j < _size - 1; ++j)
 							_vector[j] = _vector[j + 1];
 						++_size;
 						return (position);
 					}
 				}
 			} else {
-				for (int i = 0; i < _size; ++i) {
+				for (size_type i = 0; i < _size; ++i) {
 					if (position == _vector + i) {
 						pos = position - _vector;
 						reserve(_size + 1);
 						allocTmp = _alloc.allocate(_capacity);
-						for (int j = 0; j < pos; ++j)
+						for (size_type j = 0; j < pos; ++j)
 							_alloc.construct(allocTmp + j, _vector[j]);
 						_alloc.construct(allocTmp + pos, val);
 						++_size;
-						for (int j = pos + 1; j < _size; ++j)
+						for (size_type j = pos + 1; j < _size; ++j)
 							_alloc.construct(allocTmp + j, _vector[j - 1]);
-						for (int j = 0; j < _size - 1; ++j)
+						for (size_type j = 0; j < _size - 1; ++j)
 							_alloc.destroy(_vector + j);
 						_alloc.deallocate(_vector, _capacity);
 						_vector = allocTmp;
@@ -482,7 +480,7 @@ namespace ft
 					}
 				}
 			} else {
-				for (int i = 0; i < _size; ++i) {
+				for (size_type i = 0; i < _size; ++i) {
 					if (position == _vector + i) {
 						pos = position - _vector;
 						reserve(_size + n);
@@ -528,7 +526,7 @@ namespace ft
 					}
 				}
 			} else {
-				for (int i = 0; i < _size; ++i) {
+				for (size_type i = 0; i < _size; ++i) {
 					if (position == _vector + i) {
 						pos = position - _vector;
 						reserve(_size + len);
@@ -554,10 +552,10 @@ namespace ft
 			return (position);
 		}
 		iterator						erase(iterator position) {
-			for (int i = 0; i < _size; ++i) {
+			for (size_type i = 0; i < _size; ++i) {
 				if (position == _vector + i) {
 					_alloc.destroy(_vector + i);
-					for (int j = i; j < _size - 1; ++j)
+					for (size_type j = i; j < _size - 1; ++j)
 						_vector[j] = _vector[j + 1];
 					_vector[_size-- - 1] = T();
 					return (position);
@@ -566,24 +564,23 @@ namespace ft
 			return (this->end());
 		}
 		iterator						erase(iterator first, iterator last) {
-			int 		state = 0;
 			size_type   start;
 			size_type   end;
 			
-			for (int i = 0; i < _size; ++i) {
+			for (size_type i = 0; i < _size; ++i) {
 				if (first == _vector + i) {
 					size_type   diff;
 					start = first - _vector;
 					end = last - _vector;
 
 					diff = end - start;
-					for (int j = start; j < end && j + diff < _size; ++j) {
+					for (size_type j = start; j < end && j + diff < _size; ++j) {
 						_alloc.destroy(_vector + j);
 						_vector[j] = _vector[j + diff];
 					}
-					for (int j = end; j + diff < _size; ++j)
+					for (size_type j = end; j + diff < _size; ++j)
 						_vector[j] = _vector[j + diff];
-					for (int j = _size - diff; j < _size; ++j)
+					for (size_type j = _size - diff; j < _size; ++j)
 						_alloc.destroy(_vector + j);
 					_size -= diff;
 				}
@@ -595,7 +592,7 @@ namespace ft
 			size_type   tmpSize = _size;
 
 		    if (this != &prey) {
-			    for (int i = 0; i < _size; ++i)
+			    for (size_type i = 0; i < _size; ++i)
 				    _alloc.construct(tmp + i, *(_vector + i));
 		        *this = prey;
 		        prey.clear();
@@ -607,7 +604,7 @@ namespace ft
 		    _alloc.deallocate(tmp, tmpSize);
 		}
         void                            clear() {
-            for (int i = 0; i < _size; ++i)
+            for (size_type i = 0; i < _size; ++i)
                 _alloc.destroy(_vector + i);
             _size = 0;
 		}
@@ -615,7 +612,7 @@ namespace ft
         friend bool						operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
 			if (lhs.size() != rhs.size())
 				return (false);
-			for (int i = 0; i < rhs.size(); ++i) {
+			for (size_type i = 0; i < rhs.size(); ++i) {
 				if (lhs._vector[i] != rhs._vector[i])
 					return (false);
 			}
@@ -682,7 +679,6 @@ namespace ft
 		Alloc				_alloc;
 		T					*_vector;
 	};
-	
 }
 
 #endif

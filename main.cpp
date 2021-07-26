@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include "map.hpp"
 
 int main(void)
 {
@@ -199,7 +200,7 @@ int main(void)
 	myvector.erase(myvector.begin() + 5);
 	//erase the first 3 elements
 	myvector.erase(myvector.begin(), myvector.begin() + 3);
-	for (int i = 0; i < myvector.size(); ++i)
+	for (size_type i = 0; i < myvector.size(); ++i)
 		std::cout << myvector[i] << ' ';
 	std::cout << "\033[0m" << std::endl;
 	std::cout << "\033[35;1mSTANDARD ERASE FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
@@ -209,7 +210,7 @@ int main(void)
 	my_stdvector.erase(my_stdvector.begin() + 5);
 	//erase the first 3 elements
 	my_stdvector.erase(my_stdvector.begin(), my_stdvector.begin() + 3);
-	for (int i = 0; i < my_stdvector.size(); ++i)
+	for (size_type i = 0; i < my_stdvector.size(); ++i)
 		std::cout << my_stdvector[i] << ' ';
 	std::cout << "\033[0m" << std::endl;
 	std::cout << "\033[32;1mSWAP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
@@ -217,11 +218,11 @@ int main(void)
 	ft::vector<int> ft_bar(5, 200);
 	ft_foo.swap(ft_bar);
 	std::cout << "ft_foo contains: ";
-	for (int i = 0; i < ft_foo.size(); ++i)
+	for (size_type i = 0; i < ft_foo.size(); ++i)
 		std::cout << ft_foo[i] << ' ';
 	std::cout << std::endl;
 	std::cout << "ft_bar contains: ";
-	for (int i = 0; i < ft_bar.size(); ++i)
+	for (size_type i = 0; i < ft_bar.size(); ++i)
 		std::cout << ft_bar[i] << ' ';
 	std::cout << "\033[0m" << std::endl;
 	std::cout << "\033[35;1mSTANDARD SWAP FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
@@ -229,11 +230,11 @@ int main(void)
 	std::vector<int> std_bar(5, 200);
 	std_foo.swap(std_bar);
 	std::cout << "std_foo contains: ";
-	for (int i = 0; i < std_foo.size(); ++i)
+	for (size_type i = 0; i < std_foo.size(); ++i)
 		std::cout << std_foo[i] << ' ';
 	std::cout << std::endl;
 	std::cout << "std_bar contains: ";
-	for (int i = 0; i < std_bar.size(); ++i)
+	for (size_type i = 0; i < std_bar.size(); ++i)
 		std::cout << std_bar[i] << ' ';
 	std::cout << "\033[0m" << std::endl;
 	std::cout << "\033[32;1mRELATIONAL OPERATORS TEST:\033[0m" << "\033[36;1m" <<std::endl;
@@ -268,6 +269,17 @@ int main(void)
 	if (std_foo2 <= std_bar2) std::cout << "std_foo2 is less than or equal to std_bar2\n";
 	if (std_foo2 >= std_bar2) std::cout << "std_foo2 is greater than or equal to std_bar2";
 	std::cout << "\033[0m" << std::endl;
-    return (0);
+	std::cout << "\033[32;1mPAIR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	ft::pair<std::string, double>	product1;
+	ft::pair<std::string, double>	product2("tomatoes", 2.30);
+	ft::pair<std::string, double>	product3(product2);
 
+	product1 = ft::make_pair(std::string("lightbulbs"), 0.99);
+	product2.first = "shoes";
+	product2.second = 39.90;
+
+	std::cout << "The price of " << product1.first << " is $" << product1.second << std::endl;
+	std::cout << "The price of " << product2.first << " is $" << product2.second << std::endl;
+	std::cout << "The price of " << product3.first << " is $" << product3.second << "\033[0m" << std::endl;
+    return (0);
 }

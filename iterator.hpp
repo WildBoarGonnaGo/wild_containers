@@ -49,9 +49,6 @@ template <class T> class input_iterator : virtual public base_iterator<T> {
 
 		bool	 								operator==(const input_iterator &rhs) { return (this->_ptr == rhs._ptr); }
 		bool									operator!=(const input_iterator &rhs) { return !(*this == rhs); }
-
-		//const bool								operator==(const input_iterator &rhs) const { return (this->_ptr == rhs._ptr); }
-		//const bool								operator!=(const input_iterator &rhs) const { return !(*this == rhs); }
 		typename base_iterator<T>::reference	operator*() const { return (*this->_ptr); }
 		typename base_iterator<T>::pointer		operator->() const { return (this->_ptr); }
 		virtual 		~input_iterator( ) { }
@@ -94,12 +91,6 @@ template <class T> class input_iterator : virtual public base_iterator<T> {
 				operator++();
 				return (tmp);
 			}
-			/*const virtual base_iterator<T>	&operator++() { ++this->_ptr; return (*this); }
-			const virtual base_iterator<T>	operator++(int) {
-				forward_iterator	tmp = *this;
-				operator++();
-				return (tmp);
-			}*/
 			virtual 					~forward_iterator( ) { }
 		};
 
