@@ -281,5 +281,15 @@ int main(void)
 	std::cout << "The price of " << product1.first << " is $" << product1.second << std::endl;
 	std::cout << "The price of " << product2.first << " is $" << product2.second << std::endl;
 	std::cout << "The price of " << product3.first << " is $" << product3.second << "\033[0m" << std::endl;
+	std::cout << "\033[32;1mMAP CONSTRUCTOR:\033[0m" << "\033[36;1m" <<std::endl;
+	ft::map<char, int>	firstMap;
+
+	firstMap['a'] = 10;
+	firstMap['b'] = 20;
+	firstMap['c'] = 30;
+	firstMap['d'] = 70;
+
+	for (ft::map<char, int>::iterator itMap = firstMap.begin(); itMap != firstMap.end(); ++itMap)
+		std::cout << itMap. << " => " << itMap.second << std::endl;
     return (0);
 }
