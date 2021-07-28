@@ -8,6 +8,7 @@
 # include <functional>
 # include "iterator.hpp"
 # include "lexicographical_compare.hpp"
+# include "stack.hpp"
 
 namespace ft {
 	template<class T1, class T2> struct pair {
@@ -75,7 +76,15 @@ namespace ft {
 			reference					operator*() { return (*(this->_ptr)); }
 			pointer						operator->() { return (this->_ptr); }
 			virtual base_iterator<map<key_type, mapped_type> >				&operator++() {
-				
+				map *mapFound = 0x0;
+				vector<map<key_type, mapped_type> > ret = iterativeInorder(this->first);
+				for (size_type i = 0; i < ret.size(); ++i) {
+					if (ret[i]._data.first < this->first)
+						continue ;
+					else {
+
+					}
+				}
 			}
 			virtual base_iterator<map<key_type, mapped_type> >				operator++(int) {
 				iterator	tmp = *this;
@@ -83,14 +92,7 @@ namespace ft {
 				return (tmp);
 			}
 			iterator		                                        		&operator--() {
-				map									*tmp = _head;
-				size_type							size;
-				value_type							res;
-				vector<map<key_type, mapped_type>>	stackImp;
 
-				while (tmp != minElement()) {
-
-				}
 			}
 			virtual bidirectional_iterator<map<key_type, mapped_type> >		operator--(int) {
 				iterator	tmp = *this;
@@ -502,12 +504,13 @@ namespace ft {
 			return (_alloc);
 		}
 	private:
-		size_type							_size;
-		map									*_lNode;
-		map									*_rNode;
-		map									*_head;
-		allocator_type						_alloc;		
-		value_type							_data;
+		size_type							        _size;
+		map									        *_head;
+		allocator_type						        _alloc;
+		value_type							        _data;
+		map									        *_lNode;
+		map									        *_rNode;
+		std::allocator<map<key_type, mapped_type> > _allocMap;
 		map									*search_key(map *roll, key_type const &key) {
 			if (!roll)
 				return (0x0);
@@ -550,21 +553,24 @@ namespace ft {
 				_allocMap.deallocate(head);
 			}
 		}
-		key_type							iterativePreorder(const key_type &k) {
+		vector<map<key_type, mapped_type> *> iterativeInorder(const key_type &k) {
 			map										*tmp = _head;
 			size_type								size;
 			value_type								res;
-			vector<map<key_type, mapped_type> *>	stackImp;
-			vector<map<key_type, mapped_type> *>	stackImpRes;
+			stack<map<key_type, mapped_type> *>     cage;
+			vector<map<key_type, mapped_type> *>    iterBox;
 
-			if (!_head)
-				return ;
-			stackImp.push_back(tmp);
-			while (!stackImp.empty()) {
-				tmp = stackImp.front();
-				if (tmp->_lNode)
-					
+			while (!cage.empty() || tmp) {
+				if (tmp) {
+					cage.push(tmp);
+					tmp = tmp->_lNode;
+				} else {
+					tmp = cage.pop();
+					iterBox.push_back(tmp);
+					tmp = tmp->_rNode;
+				}
 			}
+			return (iterBox);
 		}
 		map                                 *minElement(map *head) {
 			if (!head)

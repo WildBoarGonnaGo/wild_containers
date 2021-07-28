@@ -8,4 +8,4 @@ set(CMAKE_CXX_STANDARD 98)
 include_directories(.)
 
 add_executable(contain_test
-        main.cpp map.hpp lexicographical_compare.hpp)
+        main.cpp map.hpp lexicographical_compare.hpp stack.hpp)
