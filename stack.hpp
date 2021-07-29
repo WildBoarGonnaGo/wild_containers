@@ -15,7 +15,7 @@ namespace ft {
 	protected:
 		Container c;
 	public:
-		explicit stack(Container s()) { }
+		explicit stack(Container s()) : c(s) { }
 		bool                empty() const { return (c.empty()); }
 		size_type           size() const { return (c.size()); }
 		value_type          &top() { return (c.back()); }
@@ -29,11 +29,11 @@ namespace ft {
 		friend bool operator!=(const stack<T, Container>& x,
 		                const stack<T, Container>& y) { return (!(x == y)); }
 		friend bool operator> (const stack<T, Container>& x,
-		                const stack<T, Container>& y) { return ((x > y)); }
+		                const stack<T, Container>& y) { return (x > y); }
 		friend bool operator>=(const stack<T, Container>& x,
-		                const stack<T, Container>& y) { return ((x > y || x == y)); }
+		                const stack<T, Container>& y) { return (x > y || x == y); }
 		friend bool operator<=(const stack<T, Container>& x,
-		                const stack<T, Container>& y) { return ((x < y || x == y)); }
+		                const stack<T, Container>& y) { return (x < y || x == y); }
 	};
 }
 

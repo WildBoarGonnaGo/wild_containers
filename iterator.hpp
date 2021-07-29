@@ -17,7 +17,7 @@ template <class T> class base_iterator {
 			if (this != &rhs)
 				*this = rhs;
 		}
-		base_iterator	&operator=(const base_iterator &rhs) {
+		base_iterator			&operator=(const base_iterator &rhs) {
 			_ptr = rhs._ptr;
 			return (*this);
 		}
