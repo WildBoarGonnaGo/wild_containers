@@ -56,7 +56,7 @@ namespace ft {
         typedef Allocator               		allocator_type;
 
 		class iterator : public virtual bidirectional_iterator<pair<key_type, mapped_type> >,
-		public virtual map<Key, T> {
+		        public virtual map<Key, T> {
 		public:
 			typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	reference;
 			typedef typename base_iterator<pair<key_type, mapped_type> >::distance	distance;
@@ -136,11 +136,6 @@ namespace ft {
 			bool            operator==(iterator const &rhs) { return ((*this)->first == rhs._ptr->first && (*this)->second == rhs._ptr->second); }
 			bool            operator!=(iterator const &rhs) { return (!(*this == rhs)); }
 			virtual ~iterator( ) { }
-		/*protected:
-			const reference		operator*() const {
-				return (*(this->_ptr));
-			}
-			const pointer		operator->() const { return (this->_ptr); }*/
 		protected:
 			map				*_iterHead;
 		};
@@ -163,6 +158,10 @@ namespace ft {
 			reverse_iterator				&operator=(const pointer rhs) {
 				this->_ptr = rhs;
 				return (*this);
+			}
+			reverse_iterator				&operator=(map *rhs) {
+			    this->_iterHead = rhs;
+			    return (*this);
 			}
 			reference						operator*() { return (*(this->_ptr)); }
 			pointer							operator->() { return (this->_ptr); }
@@ -213,11 +212,8 @@ namespace ft {
 			}
 			bool            operator==(pointer const rhs) { return this->_ptr == rhs; }
 			virtual ~reverse_iterator( ) { }
-		/*protected:
-			const reference		operator*() const {
-				return (*(this->_ptr));
-			}
-			const pointer		operator->() const { return (this->_ptr); }*/
+		protected:
+		    map				*_iterHead;
 		};
 		class const_iterator : public iterator {
 		public:
@@ -256,8 +252,6 @@ namespace ft {
 		};
 		class const_reverse_iterator : virtual public reverse_iterator {
 		public:
-			//friend class reverse_iterator;
-			//friend class base_iterator<pair<key_type, mapped_type> >;
 			typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	reference;
 			typedef typename base_iterator<pair<key_type, mapped_type> >::distance	distance;
 			typedef typename base_iterator<pair<key_type, mapped_type> >::pointer		pointer;
@@ -352,51 +346,29 @@ namespace ft {
 				_head->operator[](first->first) = first->second;
 		}
 		iterator								begin() {
-			//map::_hintTransCp = this;
 			map			*tmpMap = minElement(_head);
 			iterator	res;
 			res = this;
 			res = (tmpMap != 0x0) ? tmpMap->_data : _data;
-			tmpMap->_lNode = this;
-			//res = _data;
 			return (res);
 		}
 		const_iterator							begin() const {
-			//map::_hintTransCp = const_cast<map<key_type, mapped_type> *>(this);
 			map			*tmpMap = const_cast<map<key_type, mapped_type> *>(minElement(_head));
 			iterator	res;
 			res = (tmpMap != 0x0) ? tmpMap->_data : _data;
 			return (res);
 		}
 		iterator								end() {
-			map			*tmpMap;
-			tmpMap = maxElement(_head);
-			//iterator	tmp;
-			//while (tmp->_lNode && tmp->rNode && tmp != tmp->_head->_lNode)
-			//	++tmp;
-			
-			//closeTree(&tmpMap, true);
-			tmpMap->_rNode = this;
 			iterator	res;
 			res = this;
 			res = _data;
 			return (res);
-			//return (0x0);
 		}
 		const_iterator							end() const {
-			map			*tmpMap;
-			tmpMap = const_cast<map<key_type, mapped_type> *>(maxElement(_head));
-			//iterator	tmp;
-			//while (tmp->_lNode && tmp->rNode && tmp != tmp->_head->_lNode)
-			//	++tmp;
-			
-			//closeTree(&tmpMap, true);
-			if (tmpMap)
-				tmpMap->_rNode = const_cast<map<key_type, mapped_type> *>(this);
 			iterator res;
+			res = const_cast<map *>(this);
 			res = _data;
 			return (res);
-			//return (0x0);
 		}
 		reverse_iterator					rend() { 
 			//map::_hintTransCp = this;
@@ -428,31 +400,13 @@ namespace ft {
 			res = _data;
 			return (res);
 		}
-		reverse_iterator					rbegin() { 
-			//reverse_iterator	tmp = maxElement(this);
-			/*while (tmp->_lNode && tmp->rNode && tmp != tmp->_head->_lNode)
-				++tmp;*/
-			//map			*tmpMap = maxElement(_head);
-			//if (tmpMap)
-			//return ((tmpMap != 0x0) ? tmpMap->_data : 0x0);
-			//return (tmp);
-			//map::_hintTransCp = this;
-			//map::_hintTransCp = const_cast<map<key_type, mapped_type> *>(this);
+		reverse_iterator					rbegin() {
 			map			*tmpMap = minElement(_head);
 			reverse_iterator	res;
 			res = (tmpMap != 0x0) ? tmpMap->_data : _data;
 			return (res);
 		}
-		const_reverse_iterator				rbegin() const { 
-			//reverse_iterator	tmp = maxElement(this);
-			/*while (tmp->_lNode && tmp->rNode && tmp != tmp->_head->_lNode)
-				++tmp;*/
-			//map			*tmpMap = maxElement(_head);
-			//if (tmpMap)
-			//return ((tmpMap != 0x0) ? tmpMap->_data : 0x0);
-			//return (tmp);
-			//map::_hintTransCp = this;
-			//map::_hintTransCp = const_cast<map<key_type, mapped_type> >(this);
+		const_reverse_iterator				rbegin() const {
 			map			*tmpMap = const_cast<map<key_type, mapped_type> *>(minElement(_head));
 			reverse_iterator	res;
 			res = (tmpMap != 0x0) ? tmpMap->_data : _data;
