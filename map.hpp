@@ -133,6 +133,8 @@ namespace ft {
 				return (*this == rhs || *this > rhs);
 			}
 			bool            operator==(pointer const rhs) { return this->_ptr == rhs; }
+			bool            operator==(iterator const &rhs) { return ((*this)->first == rhs._ptr->first && (*this)->second == rhs._ptr->second); }
+			bool            operator!=(iterator const &rhs) { return (!(*this == rhs)); }
 			virtual ~iterator( ) { }
 		/*protected:
 			const reference		operator*() const {
@@ -355,6 +357,8 @@ namespace ft {
 			iterator	res;
 			res = this;
 			res = (tmpMap != 0x0) ? tmpMap->_data : _data;
+			tmpMap->_lNode = this;
+			//res = _data;
 			return (res);
 		}
 		const_iterator							begin() const {
@@ -372,9 +376,9 @@ namespace ft {
 			//	++tmp;
 			
 			//closeTree(&tmpMap, true);
-			tmpMap->_lNode = this;
+			tmpMap->_rNode = this;
 			iterator	res;
-			res = _head;
+			res = this;
 			res = _data;
 			return (res);
 			//return (0x0);

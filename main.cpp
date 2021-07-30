@@ -284,10 +284,10 @@ int main(void)
 	std::cout << "\033[32;1mMAP CONSTRUCTOR:\033[0m" << "\033[36;1m" <<std::endl;
 	ft::map<char, int>	firstMap;
 
-	firstMap['a'] = 10;
 	firstMap['b'] = 20;
-	firstMap['c'] = 30;
+	firstMap['a'] = 10;
 	firstMap['d'] = 70;
+	firstMap['c'] = 30;
 
 	for (ft::map<char, int>::iterator itMap = firstMap.begin(); itMap != firstMap.end(); ++itMap)
 		std::cout << itMap->first << " => " << itMap->second << std::endl;
