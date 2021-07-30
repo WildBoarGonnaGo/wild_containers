@@ -15,7 +15,7 @@ namespace ft {
 	protected:
 		Container c;
 	public:
-		explicit stack(Container s()) : c(s) { }
+		explicit stack(const Container &contain = Container()) : c(contain) { }
 		bool                empty() const { return (c.empty()); }
 		size_type           size() const { return (c.size()); }
 		value_type          &top() { return (c.back()); }

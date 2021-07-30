@@ -290,6 +290,6 @@ int main(void)
 	firstMap['d'] = 70;
 
 	for (ft::map<char, int>::iterator itMap = firstMap.begin(); itMap != firstMap.end(); ++itMap)
-		std::cout << itMap. << " => " << itMap.second << std::endl;
+		std::cout << itMap->first << " => " << itMap->second << std::endl;
     return (0);
 }

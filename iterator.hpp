@@ -103,6 +103,7 @@ template <class T> class input_iterator : virtual public base_iterator<T> {
 			} 
 			bidirectional_iterator	&operator=(const bidirectional_iterator &rhs) {
 				this->_ptr = rhs._ptr;
+				return (*this);
 			}
 			virtual bidirectional_iterator	&operator--() { --this->_ptr; return (*this); }
 			virtual bidirectional_iterator	operator--(int) {
