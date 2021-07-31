@@ -3,6 +3,7 @@
 #include <vector>
 #include <iterator>
 #include "map.hpp"
+#include <map>
 
 int main(void)
 {
@@ -281,15 +282,73 @@ int main(void)
 	std::cout << "The price of " << product1.first << " is $" << product1.second << std::endl;
 	std::cout << "The price of " << product2.first << " is $" << product2.second << std::endl;
 	std::cout << "The price of " << product3.first << " is $" << product3.second << "\033[0m" << std::endl;
-	std::cout << "\033[32;1mMAP CONSTRUCTOR:\033[0m" << "\033[36;1m" <<std::endl;
-	ft::map<char, int>	firstMap;
+	std::cout << "\033[32;1mFT MAP DEFAULT CONSTRUCTOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	ft::map<char, int>	ft_firstMap;
 
-	firstMap['b'] = 20;
-	firstMap['a'] = 10;
-	firstMap['d'] = 70;
-	firstMap['c'] = 30;
+	ft_firstMap['b'] = 20;
+	ft_firstMap['a'] = 10;
+	ft_firstMap['d'] = 70;
+	ft_firstMap['c'] = 30;
 
-	for (ft::map<char, int>::iterator itMap = firstMap.begin(); itMap != firstMap.end(); ++itMap)
-		std::cout << itMap->first << " => " << itMap->second << std::endl;
+	for (ft::map<char, int>::iterator itMap = ft_firstMap.begin(); itMap != ft_firstMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[32;1mFT MAP RANGE CONSTRUCTOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	ft::map<char, int> ft_secondMap(ft_firstMap.begin(), ft_firstMap.end());
+	for (ft::map<char, int>::iterator itMap = ft_secondMap.begin(); itMap != ft_secondMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	ft_secondMap['A'] = 5;
+	ft_secondMap['B'] = 7;
+	ft_secondMap['e'] = 80;
+	ft::map<char, int>  ft_thirdMap(ft_secondMap);
+	std::cout << "\033[32;1mFT MAP COPY CONSTRUCTOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	for (ft::map<char, int>::iterator itMap = ft_thirdMap.begin(); itMap != ft_thirdMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[32;1mFT MAP REVERSE ITERATOR TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	for (ft::map<char, int>::reverse_iterator itMap = ft_thirdMap.rbegin(); itMap != ft_thirdMap.rend(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[35;1mSTANDARD MAP DEFAULT CONSTRUCTOR TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	std::map<char, int>	std_firstMap;
+
+	std_firstMap['b'] = 20;
+	std_firstMap['a'] = 10;
+	std_firstMap['d'] = 70;
+	std_firstMap['c'] = 30;
+
+	for (std::map<char, int>::iterator itMap = std_firstMap.begin(); itMap != std_firstMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[35;1mSTANDARD MAP RANGE CONSTRUCTOR TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	std::map<char, int> std_secondMap(std_firstMap.begin(), std_firstMap.end());
+	for (std::map<char, int>::iterator itMap = std_secondMap.begin(); itMap != std_secondMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std_secondMap['A'] = 5;
+	std_secondMap['B'] = 7;
+	std_secondMap['e'] = 80;
+	std::map<char, int>  std_thirdMap(std_secondMap);
+	std::cout << "\033[35;1mSTANDARD MAP COPY CONSTRUCTOR TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	for (std::map<char, int>::iterator itMap = std_thirdMap.begin(); itMap != std_thirdMap.end(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[35;1mSTANDARD MAP REVERSE ITERATOR TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	for (std::map<char, int>::reverse_iterator itMap = std_thirdMap.rbegin(); itMap != std_thirdMap.rend(); ++itMap)
+	    std::cout << itMap->first << " => " << itMap->second << std::endl;
+	std::cout << "\033[0m";
+	std::cout << "\033[32;1mFT MAP SIZE TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	std::cout << ft_thirdMap.size() <<"\033[0m" << std::endl;
+	std::cout << "\033[35;1mSTD MAP SIZE TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	std::cout << std_thirdMap.size() <<"\033[0m" << std::endl;
+	std::cout << "\033[32;1mFT MAP EMPTY TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	std::cout << ft_thirdMap.empty() <<"\033[0m" << std::endl;
+	std::cout << "\033[35;1mSTD MAP EMPTY TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	std::cout << std_thirdMap.empty() <<"\033[0m" << std::endl;
+	std::cout << "\033[32;1mFT MAP MAX_SIZE TEST:\033[0m" << "\033[36;1m" <<std::endl;
+	std::cout << ft_thirdMap.max_size() <<"\033[0m" << std::endl;
+	std::cout << "\033[35;1mSTD MAP MAX_SIZE TEST:\033[0m" << "\033[32;1m" <<std::endl;
+	std::cout << std_thirdMap.max_size() <<"\033[0m" << std::endl;
     return (0);
 }
