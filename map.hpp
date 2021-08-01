@@ -431,7 +431,7 @@ namespace ft {
 		}
 		bool 								empty() const { return (!_size); }
 		size_type 							size() const { return (_size); }
-		size_type 							max_size() const { return ( _alloc.max_size());  }
+		size_type 							max_size() const { return ( _allocMap.max_size());  }
 		mapped_type							&operator[](const key_type &k) {
 			map	*tmp = 0x0;
 			map	*res = 0x0;
