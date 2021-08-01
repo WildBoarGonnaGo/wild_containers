@@ -317,40 +317,30 @@ namespace ft {
 			const pointer		        operator->() const { return (this->_ptr); }
 		};
 		explicit 						map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())  {
-			pair<key_type, mapped_type>	lValue;
-			lValue.first = key_type();
-			lValue.second = mapped_type();
 			_size = 0;
 			_lNode = 0x0;
 			_rNode = 0x0;
 			_head = 0x0;
 			_alloc = alloc;
 			_comp = comp;
-			_data = _inAlloc.allocate(1);
-			_inAlloc.construct(_data, lValue);
 		 };
 		map(const map &x) {
 			_size = 0;
 			_lNode = 0x0;
 			_rNode = 0x0;
 			_head = 0x0;
+			_data = 0x0;
 			if (this != &x)
 				*this = x;
 		}
 		map									&operator=(const map &x) {
-		    pair<Key, T>    pairDefault;
-
-			clearMap(&_head);
+			clear();
 			_size = 0;
 			_head = 0x0;
 			_lNode = 0x0;
 			_rNode = 0x0;
-			pairDefault.first = key_type();
-			pairDefault.second = mapped_type();
-			_data = _inAlloc.allocate(1);
 			_comp = x._comp;
 			_alloc = x.get_allocator();
-			_inAlloc.construct(_data, pairDefault);
 			for (const_iterator first = x.begin(); first != x.end(); ++first)
 			    (*this)[first->first] = first->second;
 			return (*this);
@@ -358,17 +348,11 @@ namespace ft {
 		explicit 							map(iterator first, iterator last,
 		             						const key_compare &comp = key_compare(),
 											const allocator_type &alloc = allocator_type()) {
-			pair<Key, T>    pairValue;
-
 			_size = 0;
 			_lNode = 0x0;
 			_rNode = 0x0;
 			_head = 0x0;
 			_alloc = alloc;
-			_data = _inAlloc.allocate(1);
-			pairValue.first = key_type();
-			pairValue.second = key_type();
-			_inAlloc.construct(_data, pairValue);
 			_comp = comp;
 			for ( ; first != last; ++first)
 			    (*this)[first->first] = first->second;
@@ -645,7 +629,7 @@ namespace ft {
 		key_compare									_comp;
 		std::allocator<map<key_type, mapped_type> > _allocMap;
 		map										*search_key(map *roll, key_type const &key) {
-			if (!roll)
+			if (!roll || roll == this)
 				return (0x0);
 			else {
 				if (roll->_data->first == key)
@@ -659,8 +643,7 @@ namespace ft {
 		void									addElement(map **head, key_type const &key) {
 			if (!(*head) || (*head) == this) {
 				*head = _allocMap.allocate(1);
-				map doll;
-				_allocMap.construct((*head), doll);
+				_allocMap.construct((*head), map());
 				(*head)->_data = _inAlloc.allocate(1);
 				pair<Key, T> dataValue;
 				dataValue.first = key;
@@ -681,6 +664,7 @@ namespace ft {
 				clearMap(&(*head)->_rNode);
 				_inAlloc.destroy((*head)->_data);
 				_inAlloc.deallocate((*head)->_data, 1);
+				(*head)->_data = 0x0;
 				_allocMap.destroy(*head);
 				_allocMap.deallocate(*head, 1);
 				*head = 0x0;
@@ -745,6 +729,7 @@ namespace ft {
 						*head = (*head)->_rNode;
 						_inAlloc.destroy(tmp->_data);
 						_inAlloc.deallocate(tmp->_data, 1);
+						tmp->_data = 0x0;
 						_allocMap.destroy(tmp);
 						_allocMap.deallocate(tmp, 1);
 						tmp = 0x0;
@@ -753,6 +738,7 @@ namespace ft {
 						*head = (*head)->_lNode;
 						_inAlloc.destroy(tmp->_data);
 						_inAlloc.deallocate(tmp->_data, 1);
+						tmp->_data = 0x0;
 						_allocMap.destroy(tmp);
 						_allocMap.deallocate(tmp, 1);
 						tmp = 0x0;
