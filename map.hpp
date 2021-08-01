@@ -69,6 +69,7 @@ namespace ft {
 			}
 			iterator															&operator=(const iterator &rhs) {
 				this->_ptr = rhs._ptr;
+				this->_iterHead = rhs._iterHead;
 				return (*this);
 			}
 			iterator															&operator=(const pointer rhs) {
@@ -343,7 +344,7 @@ namespace ft {
 		map									&operator=(const map &x) {
 		    pair<Key, T>    pairDefault;
 
-			clearMap(_head);
+			clearMap(&_head);
 			_size = 0;
 			_head = 0x0;
 			_lNode = 0x0;
@@ -446,73 +447,102 @@ namespace ft {
 			return (res->_data->second);
 		}
 		pair<iterator, bool>				insert(const pair<key_type, mapped_type>& val) {
-			pair<key_type, mapped_type>	*result;
-			bool		state = false;
+			bool		                state = false;
+			iterator                    res;
 
 			if (!search_key(_head, val.first)) {
 				addElement(&_head, val.first);
 				++_size;
+				maxElement(_head)->_rNode = this;
+				minElement(_head)->_lNode = this;
 				state = true;
+				(*_head)[val.first] = val.second;
 			}
-			_head[val.first] = val.second;
-			result = search_key(_head, val.first)->_data;
-			return (make_pair(result, state));
+			for (res = this->begin(); res != this->end(); ++res) {
+			    if ((res->first == val.first && res->second == val.second && state) ||
+			    (res->first == val.first && !state))
+			        break ;
+			}
+			const pair<iterator, bool>  ret = make_pair<iterator, bool>(res, state);
+			return (ret);
 		}
-		iterator								insert(iterator position, const pair<key_type, mapped_type> &val) {
-			/*map 					lValue = *position;
-			pair<iterator, bool>	insertRes;
-			iterator				it;
+		iterator							insert(iterator position, const pair<key_type, mapped_type> &val) {
+		    map         *searchObj = search_key(_head, position->first);
+		    iterator    it;
 
-			if (lValue._data > lValue._lNode->_data
-				&& lValue._data < lValue._rNode->_data
-				&& lValue._data > lValue._head->_data) {
-				lValue._data = val;
-				it = position;
-			} else {
-				insertRes = insert(val);
-				it = insertRes.first;
-			}
-			return (it);*/
-			if (val == *position)
-				_head[position->first] == position->second;
-			else
-				insert(val);
+		    it = find(val.first);
+		    if (it == end()) {
+		        if (val.first > position->first && (!searchObj->_rNode || searchObj->_rNode == this)) {
+		            addElement(&(searchObj->_rNode), val.first);
+		            searchObj->_rNode->_data->second = val.second;
+		            it = searchObj->_rNode->_data;
+		        } else if (val.first < position->first && (!searchObj->_lNode || searchObj->_lNode == this)) {
+		            addElement(&(searchObj->_lNode), val.first);
+		            searchObj->_lNode->_data->second = val.second;
+		            it = searchObj->_lNode->_data;
+		        }
+		        else {
+		            pair<iterator, bool>    tmp;
+
+		            tmp = insert(val);
+		            it = tmp.first;
+		        }
+		        maxElement(_head)->_rNode = this;
+		        minElement(_head)->_lNode = this;
+		    }
+		    return (it);
 		}
 		void									insert(iterator first, iterator last) {
+		    iterator               res;
+
 			for ( ; first != last; ++first) {
-				insert(*first);
+			    if (find(first->first) == end()) {
+			        insert(*first);
+			        res = find(first->first);
+			        res->second = first->second;
+			    }
 			}
 		}
 		void                    				erase(iterator position) {
-			//map tmp = *position;
-			map *ptr = search_key(position->first);
-
-			//ptr = search_key(this, tmp._data.first);
-			if (ptr)
-				deleteElement(&_head, ptr->_data->first);
+			if (position != end())
+				deleteElement(&_head, position->first);
+			maxElement(_head)->_rNode = this;
+			minElement(_head)->_lNode = this;
 		}
 		size_type               				erase(const key_type &k) {
 			size_type   res = 0;
 			map         *tmp = 0x0;
 
-			while ((tmp = search_key(k))) {
+			while ((tmp = search_key(_head, k))) {
 				++res;
-				deleteElement(&this, k);
+				deleteElement(&_head, k);
 			}
+			maxElement(_head)->_rNode = this;
+			minElement(_head)->_lNode = this;
 			return (res);
 		}
 		void                					erase(iterator first, iterator last) {
-			for ( ; first != last; ++first)
-				erase(first);
+		    iterator    prev;
+
+			while ( first != last ) {
+			    prev = first;
+			    ++first;
+			    erase(prev);
+			}
 		}
 		void                					swap(map &x) {
 			map buff(*this);
 
 			*this = x;
 			x = buff;
+			maxElement(_head)->_rNode = this;
+			minElement(_head)->_lNode = this;
+			maxElement(x._head)->_rNode = this;
+			minElement(x._head)->_lNode = this;
 		}
 		void                					clear() {
-			clearMap(_head);
+			clearMap(&_head);
+			_size = 0;
 		}
 		key_compare								key_comp() const {
 			return (key_compare());
@@ -535,82 +565,83 @@ namespace ft {
 			return (result);
 		}
 		iterator								find(const key_type &k) {
-			map	*tmp = search_key(this, k);
-			return (tmp->_data);
+		    iterator    res;
+
+			map	*tmp = search_key(_head, k);
+			if (!tmp)
+			    return (end());
+			res = tmp->_data;
+			res = this;
+			return (res);
 		}
 		const_iterator							find(const key_type &k) const {
-			map	*tmp = search_key(this, k);
-			return (tmp->_data);
+		    iterator    res;
+
+		    map	*tmp = search_key(_head, k);
+		    if (!tmp)
+		        return (end());
+		    res = tmp->_data;
+		    res = this;
+		    return (res);
 		}
 		size_type								count(const key_type &k) {
-			return ((search_key(this, k) != 0x0));
+			return ((search_key(_head, k) != 0x0));
 		}
 		iterator								lower_bound(const key_type &k) {
-			for (iterator it = _head->begin(); it != _head->end(); ++it) {
-				pair<key_type, mapped_type>	tmp = *it;
-				if (!(key_compare(tmp.first, k)))
-					return (it);
+			for (iterator it = begin(); it != end(); ++it) {
+				//pair<key_type, mapped_type>	tmp = *it;
+				if (!(_comp(it->first, k)))
+				    return (it);
 			}
 			return (end());
 		}
 		const_iterator							lower_bound(const key_type &k) const {
 
-			for (iterator it = _head->begin(); it != _head->end(); ++it) {
-				pair<key_type, mapped_type>	tmp = *it;
-				if (!(key_compare(tmp.first, k)))
-					return (it);
+			for (iterator it = begin(); it != end(); ++it) {
+				//pair<key_type, mapped_type>	tmp = *it;
+				if (!(_comp(it->first, k)))
+				    return (it);
 			}
-			return (0x0);
+			return (end());
 		}
 		iterator								upper_bound(const key_type &k) {
-			for (iterator it = _head->begin(); it != _head->end(); ++it) {
-				pair<key_type, mapped_type>	tmp = *it;
-				if (key_compare(tmp.first, k))
-					return (it);
+			for (iterator it = begin(); it != end(); ++it) {
+				//pair<key_type, mapped_type>	tmp = *it;
+				if (!(_comp(it->first, k))) {
+				    ++it;
+				    return (it);
+				}
 			}
 			return (end());
 		}
 		const_iterator							upper_bound(const key_type &k) const {
-			const_iterator cit;
-
-			for (iterator it = this->begin(); it != this->end(); ++it) {
-				pair<key_type, mapped_type>	tmp = *it;
-				if (key_compare(tmp.first, k))
-					return ((cit = it));
-			}
-			return (0x0);
-		}
-		pair<const_iterator, const_iterator>	equal(const key_type &k) const {
-			pair<const_iterator, const_iterator>	res;
-			for (iterator it = _head->begin(); it != _head->end(); ++it) {
-				pair<key_type, mapped_type>	tmp = *it;
-				if (tmp.first == k) {
-					res.first = it;
-					res.second = ++it;
-					return (res);
+			for (iterator it = begin(); it != end(); ++it) {
+				//pair<key_type, mapped_type>	tmp = *it;
+				if (!(_comp(it->first, k))) {
+				    ++it;
+				    return (it);
 				}
 			}
-			res.first = 0x0;
-			res.second = 0x0;
+			return (end());
+		}
+		pair<const_iterator, const_iterator>	equal_range(const key_type &k) const {
+			pair<const_iterator, const_iterator>	res;
+
+			res.first = lower_bound(k);
+			res.second = upper_bound(k);
 			return (res);
 		}
-		pair<iterator, iterator>				equal(const key_type &k) {
+		pair<iterator, iterator>				equal_range(const key_type &k) {
 			pair<iterator, iterator>	res;
-			for (iterator it = _head->begin(); it != _head->end(); ++it) {
-				value_type	tmp = *it;
-				if (tmp.first == k) {
-					res.first = it;
-					res.second = ++it;
-					return (res);
-				}
-			}
-			res.first = 0x0;
-			res.second = 0x0;
+
+			res.first = lower_bound(k);
+			res.second = upper_bound(k);
 			return (res);
 		}
 		allocator_type							get_allocator() const {
 			return (_alloc);
 		}
+		~map() { clear(); }
 	protected:
 		size_type							        _size;
 		map									        *_head;
@@ -631,7 +662,7 @@ namespace ft {
 					return (search_key(roll->_lNode, key));
 				else
 					return (search_key(roll->_rNode, key));
-			}	
+			}
 		}		
 		void									addElement(map **head, key_type const &key) {
 			if (!(*head) || (*head) == this) {
@@ -652,22 +683,16 @@ namespace ft {
 					addElement(&(*head)->_rNode, key);
 			}
 		}
-		void									clearMap(map *head) {
-			if (head && head != this) {
-				clearMap(head->_lNode);
-				clearMap(head->_rNode);
-				_inAlloc.destroy(head->_data);
-				_inAlloc.deallocate(head->_data, 1);
-				_allocMap.destroy(head);
-				_allocMap.deallocate(head, 1);
-				head = 0x0;
+		void									clearMap(map **head) {
+			if (*head && *head != this) {
+				clearMap(&(*head)->_lNode);
+				clearMap(&(*head)->_rNode);
+				_inAlloc.destroy((*head)->_data);
+				_inAlloc.deallocate((*head)->_data, 1);
+				_allocMap.destroy(*head);
+				_allocMap.deallocate(*head, 1);
+				*head = 0x0;
 			}
-		}
-		void									closeTree(map **tail, bool toMax) {
-			if (!toMax)
-				*tail->_lNode = this;
-			else
-				*tail->_rNode = this;
 		}
 		vector<map<key_type, mapped_type> *> 	iterativeInorder(map *head) {
 			map										*tmp = head;
@@ -718,9 +743,9 @@ namespace ft {
 		void									deleteElement(map **head, key_type const &k) {
 			map	*tmp;
 			if (*head) {
-				if ((*head)->_data.first > k)
+				if ((*head)->_data->first > k)
 					deleteElement(&(*head)->_lNode, k);
-				else if ((*head)->_data.first < k)
+				else if ((*head)->_data->first < k)
 					deleteElement(&(*head)->_rNode, k);
 				else {
 					if (!(*head)->_lNode) {
@@ -730,13 +755,15 @@ namespace ft {
 						_inAlloc.deallocate(tmp->_data, 1);
 						_allocMap.destroy(tmp);
 						_allocMap.deallocate(tmp, 1);
-					} else if (!*head->_rNode) {
+						tmp = 0x0;
+					} else if (!(*head)->_rNode) {
 						tmp = *head;
 						*head = (*head)->_lNode;
 						_inAlloc.destroy(tmp->_data);
-						_inAlloc.deallocate(tmp->_data), 1;
+						_inAlloc.deallocate(tmp->_data, 1);
 						_allocMap.destroy(tmp);
 						_allocMap.deallocate(tmp, 1);
+						tmp = 0x0;
 					} else {
 						tmp = maxElement((*head)->_lNode);
 						(*head)->_data = tmp->_data;

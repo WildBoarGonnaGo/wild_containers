@@ -3,6 +3,7 @@
 #include <vector>
 #include <iterator>
 #include "map.hpp"
+#include "iterator.hpp"
 #include <map>
 
 int main(void)
@@ -347,8 +348,193 @@ int main(void)
 	std::cout << "\033[35;1mSTD MAP EMPTY TEST:\033[0m" << "\033[32;1m" <<std::endl;
 	std::cout << std_thirdMap.empty() <<"\033[0m" << std::endl;
 	std::cout << "\033[32;1mFT MAP MAX_SIZE TEST:\033[0m" << "\033[36;1m" <<std::endl;
-	std::cout << ft_thirdMap.max_size() <<"\033[0m" << std::endl;
+	std::cout << ft_thirdMap.max_size() << "\033[0m" << std::endl;
 	std::cout << "\033[35;1mSTD MAP MAX_SIZE TEST:\033[0m" << "\033[32;1m" <<std::endl;
 	std::cout << std_thirdMap.max_size() <<"\033[0m" << std::endl;
+	std::cout << "\033[32;1mFT MAP INSERT FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<std::string, double>   ft_Map4;
+
+    ft_Map4.insert(ft::pair<std::string, double>("DoomGuy", 0));
+    ft_Map4.insert(ft::pair<std::string, double>("lchantel", 6.02));
+    ft::pair<ft::map<std::string, double>::iterator, bool>    retMap4;
+    retMap4 = ft_Map4.insert(ft::pair<std::string, double>("lchantel", 7.53));
+    if (retMap4.second==false) {
+        std::cout << "element 'lchantel' already existed";
+        std::cout << " with a value of " << retMap4.first->second << '\n';
+    }
+    // second insert function version (with hint position):
+    ft::map<std::string, double>::iterator   itMap4_2 = ft_Map4.begin();
+    ft_Map4.insert(itMap4_2, ft::pair<std::string, double>("sgertrud",9.26));  // max efficiency inserting
+    ft_Map4.insert (itMap4_2, ft::pair<std::string, double>("klavada",6.27));
+    ft_Map4.insert (itMap4_2, ft::pair<std::string, double>("Amalliar",5.07));
+    ft_Map4.insert (itMap4_2, ft::pair<std::string, double>("Amalliar",5.07));
+    ft::map<std::string, double>    ft_anothermap4;
+    ft_anothermap4.insert(ft_Map4.begin(), ft_Map4.find("klavada"));
+
+    // showing contents:
+    std::cout << "ft_Map4 contains:\n";
+    for (ft::map<std::string, double>::iterator itMap = ft_Map4.begin(); itMap != ft_Map4.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << std::endl;
+    std::cout << "ft_anothermap4 contains:\n";
+    for (ft::map<std::string, double>::iterator itMap = ft_anothermap4.begin(); itMap != ft_anothermap4.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTD MAP INSERT FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<std::string, double>   std_Map4;
+
+    std_Map4.insert(std::pair<std::string, double>("DoomGuy", 0));
+    std_Map4.insert(std::pair<std::string, double>("lchantel", 6.02));
+    std::pair<std::map<std::string, double>::iterator, bool>    retStdMap4;
+    retStdMap4 = std_Map4.insert(std::pair<std::string, double>("lchantel", 7.53));
+    if (retStdMap4.second==false) {
+        std::cout << "element 'lchantel' already existed";
+        std::cout << " with a value of " << retStdMap4.first->second << '\n';
+    }
+    // second insert function version (with hint position):
+    std::map<std::string, double>::iterator   stdItMap4 = std_Map4.begin();
+    std_Map4.insert(stdItMap4, std::pair<std::string, double>("sgertrud",9.26));  // max efficiency inserting
+    std_Map4.insert (stdItMap4, std::pair<std::string, double>("klavada",6.27));
+    std_Map4.insert (stdItMap4, std::pair<std::string, double>("Amalliar",5.07));
+    std_Map4.insert (stdItMap4, std::pair<std::string, double>("Amalliar",5.07));
+    std::map<std::string, double>    std_anothermap4;
+    std_anothermap4.insert(std_Map4.begin(), std_Map4.find("klavada"));
+
+    // showing contents:
+    std::cout << "std_Map4 contains:\n";
+    for (std::map<std::string, double>::iterator itMap = std_Map4.begin(); itMap != std_Map4.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << std::endl;
+    std::cout << "std_anothermap4 contains:\n";
+    for (std::map<std::string, double>::iterator itMap = std_anothermap4.begin(); itMap != std_anothermap4.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[32;1mFT MAP ERASE FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char, int>              ft_Map5;
+    ft::map<char, int>::iterator    ftItMap5;
+
+    ft_Map5['a']=10;
+    ft_Map5['b']=20;
+    ft_Map5['c']=30;
+    ft_Map5['d']=40;
+    ft_Map5['e']=50;
+    ft_Map5['f']=60;
+
+    ftItMap5 = ft_Map5.find('b');
+    ft_Map5.erase(ftItMap5); // erase by iterator
+    ft_Map5.erase('c'); //erase by key
+    ftItMap5 = ft_Map5.find('e');
+    ft_Map5.erase(ftItMap5, ft_Map5.end());
+    for (ft::map<char, int>::iterator itMap = ft_Map5.begin(); itMap != ft_Map5.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << std::endl;
+    std::cout << "\033[0m";
+    std::cout << "\033[32;1mFT MAP SWAP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char, int> ft_MapFoo, ft_MapBar;
+
+    ft_MapFoo['x']=100;
+    ft_MapFoo['y']=200;
+
+    ft_MapBar['a']=11;
+    ft_MapBar['b']=22;
+    ft_MapBar['c']=33;
+
+    ft_MapFoo.swap(ft_MapBar);
+
+    std::cout << "ft_MapFoo contains:\n";
+    for (ft::map<char,int>::iterator itMap = ft_MapFoo.begin(); itMap != ft_MapFoo.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+
+    std::cout << "ft_MapBar contains:\n";
+    for (ft::map<char,int>::iterator itMap = ft_MapBar.begin(); itMap != ft_MapBar.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[32;1mFT MAP CLEAR FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char,int> ft_Map6;
+
+    ft_Map6['x']=100;
+    ft_Map6['y']=200;
+    ft_Map6['z']=300;
+
+    std::cout << "ft_Map6 contains:\n";
+    for (ft::map<char,int>::iterator itMap=ft_Map6.begin(); itMap!=ft_Map6.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+
+    ft_Map6.clear();
+    ft_Map6['a']=1101;
+    ft_Map6['b']=2202;
+
+    std::cout << "ft_Map6 contains:\n";
+    for (ft::map<char,int>::iterator itMap=ft_Map6.begin(); itMap!=ft_Map6.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    /*std::cout << "\033[32;1mFT MAP KEY_COMP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char,int> ft_Map7;
+
+    ft::map<char,int>::key_compare ft_comp = ft_Map7.key_comp();
+
+    ft_Map7['a']=100;
+    ft_Map7['b']=200;
+    ft_Map7['c']=300;
+
+    std::cout << "ft_Map7 contains:\n";
+
+    char highest = ft_Map7.rbegin()->first;     // key value of last element
+
+    ft::map<char,int>::iterator itMap7 = ft_Map7.begin();
+    do {
+        std::cout << itMap7->first << " => " << itMap7->second << '\n';
+    } while ( mycomp((*(itMap7++)).first, highest) );
+
+    std::cout << '\n';
+    std::cout << "\033[0m";*/
+    std::cout << "\033[32;1mFT MAP COUNT FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char,int> ft_Map9;
+    char c;
+
+    ft_Map9 ['a']=101;
+    ft_Map9 ['c']=202;
+    ft_Map9 ['f']=303;
+
+    for (c='a'; c<'h'; c++)
+    {
+        std::cout << c;
+        if (ft_Map9.count(c)>0)
+            std::cout << " is an element of mymap.\n";
+        else
+            std::cout << " is not an element of mymap.\n";
+    }
+    std::cout << "\033[32;1mFT MAP LOWER_BOUND AND UPPER_BOUND FUNCTIONS TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char,int> ft_Map10;
+    ft::map<char,int>::iterator itlow,itup;
+
+    ft_Map10['a']=20;
+    ft_Map10['b']=40;
+    ft_Map10['c']=60;
+    ft_Map10['d']=80;
+    ft_Map10['e']=100;
+
+    itlow=ft_Map10.lower_bound ('b');  // itlow points to b
+    itup=ft_Map10.upper_bound ('d');   // itup points to e (not d!)
+
+    ft_Map10.erase(itlow,itup);        // erases [itlow,itup)
+
+
+    for (ft::map<char,int>::iterator itMap = ft_Map10.begin(); itMap != ft_Map10.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[32;1mFT MAP EQUAL_RANGE FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    ft::map<char,int> ft_Map11;
+
+    ft_Map11['a'] = 10;
+    ft_Map11['b'] = 20;
+    ft_Map11['c'] = 30;
+
+    ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+    ret = ft_Map11.equal_range('b');
+
+    std::cout << "lower bound points to: ";
+    std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+    std::cout << "upper bound points to: ";
+    std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    std::cout << "\033[0m";
     return (0);
 }
