@@ -57,7 +57,6 @@ namespace ft {
 
 		class iterator : public virtual bidirectional_iterator<pair<key_type, mapped_type> > {
 		public:
-		    friend class map;
 			typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	    reference;
 			typedef typename base_iterator<pair<key_type, mapped_type> >::distance	    distance;
 			typedef typename base_iterator<pair<key_type, mapped_type> >::pointer	    pointer;
@@ -142,12 +141,10 @@ namespace ft {
 			bool            operator==(iterator const &rhs) { return (this->_ptr == rhs._ptr); }
 			bool            operator!=(iterator const &rhs) { return (!(*this == rhs)); }
 			virtual ~iterator( ) { }
-		protected:
 			map				             *_iterHead;
 		};
 		class reverse_iterator : public virtual bidirectional_iterator<pair<key_type, mapped_type> > {
 		public:
-		    friend class map;
 		    typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	reference;
 		    typedef typename base_iterator<pair<key_type, mapped_type> >::distance	distance;
 		    typedef typename base_iterator<pair<key_type, mapped_type> >::pointer	pointer;
@@ -231,7 +228,6 @@ namespace ft {
 		    bool            operator==(reverse_iterator const &rhs) { return (this->_ptr == rhs._ptr); }
 		    bool            operator!=(reverse_iterator const &rhs) { return (!(*this == rhs)); }
 		    virtual ~reverse_iterator( ) { }
-		protected:
 		    map				             *_iterHead;
 		};
 		class const_iterator : public iterator {
@@ -715,7 +711,7 @@ namespace ft {
 				head = head->_lNode;
 			return (head);
 		}
-		map const                                *minElement(map *head) const {
+		map const                               *minElement(map *head) const {
 			if (!head)
 				return (0x0);
 			while (head->_lNode && head->_lNode != this)

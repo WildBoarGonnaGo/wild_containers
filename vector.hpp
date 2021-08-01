@@ -3,6 +3,7 @@
 # include <memory>
 # include <stdexcept>
 # include "iterator.hpp"
+# include "lexicographical_compare.hpp"
 # ifdef __amd64__
 	typedef unsigned long	size_type;
 # else
