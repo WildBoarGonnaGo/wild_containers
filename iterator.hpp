@@ -22,7 +22,7 @@ template <class T> class base_iterator {
 			return (*this);
 		}
 		virtual	base_iterator	&operator++() { ++_ptr; return (*this); }
-		virtual base_iterator	operator++(int) { 
+		virtual base_iterator	operator++(int) {
 			base_iterator tmp = *this;
 			operator++();
 			return (tmp);

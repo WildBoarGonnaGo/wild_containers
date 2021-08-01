@@ -426,6 +426,25 @@ int main(void)
     for (ft::map<char, int>::iterator itMap = ft_Map5.begin(); itMap != ft_Map5.end(); ++itMap)
         std::cout << itMap->first << " => " << itMap->second << std::endl;
     std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTANDARD MAP ERASE FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char, int>              std_Map5;
+    std::map<char, int>::iterator    stdItMap5;
+
+    std_Map5['a']=10;
+    std_Map5['b']=20;
+    std_Map5['c']=30;
+    std_Map5['d']=40;
+    std_Map5['e']=50;
+    std_Map5['f']=60;
+
+    stdItMap5 = std_Map5.find('b');
+    std_Map5.erase(stdItMap5); // erase by iterator
+    std_Map5.erase('c'); //erase by key
+    stdItMap5 = std_Map5.find('e');
+    std_Map5.erase(stdItMap5, std_Map5.end());
+    for (std::map<char, int>::iterator itMap = std_Map5.begin(); itMap != std_Map5.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << std::endl;
+    std::cout << "\033[0m";
     std::cout << "\033[32;1mFT MAP SWAP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
     ft::map<char, int> ft_MapFoo, ft_MapBar;
 
@@ -444,6 +463,26 @@ int main(void)
 
     std::cout << "ft_MapBar contains:\n";
     for (ft::map<char,int>::iterator itMap = ft_MapBar.begin(); itMap != ft_MapBar.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTANDARD MAP SWAP FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char, int> std_MapFoo, std_MapBar;
+
+    std_MapFoo['x']=100;
+    std_MapFoo['y']=200;
+
+    std_MapBar['a']=11;
+    std_MapBar['b']=22;
+    std_MapBar['c']=33;
+
+    std_MapFoo.swap(std_MapBar);
+
+    std::cout << "std_MapFoo contains:\n";
+    for (std::map<char,int>::iterator itMap = std_MapFoo.begin(); itMap != std_MapFoo.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+
+    std::cout << "std_MapBar contains:\n";
+    for (std::map<char,int>::iterator itMap = std_MapBar.begin(); itMap != std_MapBar.end(); ++itMap)
         std::cout << itMap->first << " => " << itMap->second << '\n';
     std::cout << "\033[0m";
     std::cout << "\033[32;1mFT MAP CLEAR FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
@@ -465,7 +504,26 @@ int main(void)
     for (ft::map<char,int>::iterator itMap=ft_Map6.begin(); itMap!=ft_Map6.end(); ++itMap)
         std::cout << itMap->first << " => " << itMap->second << '\n';
     std::cout << "\033[0m";
-    /*std::cout << "\033[32;1mFT MAP KEY_COMP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
+    std::cout << "\033[35;1mSTANDARD MAP CLEAR FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char,int> std_Map6;
+
+    std_Map6['x']=100;
+    std_Map6['y']=200;
+    std_Map6['z']=300;
+
+    std::cout << "std_Map6 contains:\n";
+    for (std::map<char,int>::iterator itMap=std_Map6.begin(); itMap!=std_Map6.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+
+    std_Map6.clear();
+    std_Map6['a']=1101;
+    std_Map6['b']=2202;
+
+    std::cout << "std_Map6 contains:\n";
+    for (std::map<char,int>::iterator itMap=std_Map6.begin(); itMap!=std_Map6.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[32;1mFT MAP KEY_COMP FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
     ft::map<char,int> ft_Map7;
 
     ft::map<char,int>::key_compare ft_comp = ft_Map7.key_comp();
@@ -479,12 +537,32 @@ int main(void)
     char highest = ft_Map7.rbegin()->first;     // key value of last element
 
     ft::map<char,int>::iterator itMap7 = ft_Map7.begin();
-    do {
+    while ( ft_comp((*itMap7).first, highest) ) {
         std::cout << itMap7->first << " => " << itMap7->second << '\n';
-    } while ( mycomp((*(itMap7++)).first, highest) );
-
+        ++itMap7;
+    }
     std::cout << '\n';
-    std::cout << "\033[0m";*/
+    std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTANDARD MAP KEY_COMP FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char,int> std_Map7;
+
+    std::map<char,int>::key_compare std_comp = std_Map7.key_comp();
+
+    std_Map7['a']=100;
+    std_Map7['b']=200;
+    std_Map7['c']=300;
+
+    std::cout << "std_Map7 contains:\n";
+
+    char std_highest = std_Map7.rbegin()->first;     // key value of last element
+
+    std::map<char,int>::iterator stdItMap7 = std_Map7.begin();
+    while ( std_comp((*stdItMap7).first, std_highest) ) {
+        std::cout << stdItMap7->first << " => " << stdItMap7->second << '\n';
+        ++stdItMap7;
+    }
+    std::cout << '\n';
+    std::cout << "\033[0m";
     std::cout << "\033[32;1mFT MAP COUNT FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
     ft::map<char,int> ft_Map9;
     char c;
@@ -497,13 +575,29 @@ int main(void)
     {
         std::cout << c;
         if (ft_Map9.count(c)>0)
-            std::cout << " is an element of mymap.\n";
+            std::cout << " is an element of ft_Map9.\n";
         else
-            std::cout << " is not an element of mymap.\n";
+            std::cout << " is not an element of ft_Map9.\n";
+    }
+    std::cout << "\033[35;1mSTANDARD MAP COUNT FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char,int> std_Map9;
+    char std_c;
+
+    std_Map9 ['a']=101;
+    std_Map9 ['c']=202;
+    std_Map9 ['f']=303;
+
+    for (std_c='a'; std_c<'h'; std_c++)
+    {
+        std::cout << std_c;
+        if (std_Map9.count(std_c)>0)
+            std::cout << " is an element of std_Map9.\n";
+        else
+            std::cout << " is not an element of std_Map9.\n";
     }
     std::cout << "\033[32;1mFT MAP LOWER_BOUND AND UPPER_BOUND FUNCTIONS TEST:\033[0m" << "\033[36;1m" <<std::endl;
     ft::map<char,int> ft_Map10;
-    ft::map<char,int>::iterator itlow,itup;
+    ft::map<char,int>::iterator ft_itlow,ft_itup;
 
     ft_Map10['a']=20;
     ft_Map10['b']=40;
@@ -511,13 +605,32 @@ int main(void)
     ft_Map10['d']=80;
     ft_Map10['e']=100;
 
-    itlow=ft_Map10.lower_bound ('b');  // itlow points to b
-    itup=ft_Map10.upper_bound ('d');   // itup points to e (not d!)
+    ft_itlow=ft_Map10.lower_bound ('b');  // ft_itlow points to b
+    ft_itup=ft_Map10.upper_bound ('d');   // ft_itup points to e (not d!)
 
-    ft_Map10.erase(itlow,itup);        // erases [itlow,itup)
+    ft_Map10.erase(ft_itlow,ft_itup);        // erases [ft_itlow,ft_itup)
 
 
     for (ft::map<char,int>::iterator itMap = ft_Map10.begin(); itMap != ft_Map10.end(); ++itMap)
+        std::cout << itMap->first << " => " << itMap->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTANDARD MAP LOWER_BOUND AND UPPER_BOUND FUNCTIONS TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char,int> std_Map10;
+    std::map<char,int>::iterator std_itlow,std_itup;
+
+    std_Map10['a']=20;
+    std_Map10['b']=40;
+    std_Map10['c']=60;
+    std_Map10['d']=80;
+    std_Map10['e']=100;
+
+    std_itlow=std_Map10.lower_bound ('b');  // std_itlow points to b
+    std_itup=std_Map10.upper_bound ('d');   // std_itup points to e (not d!)
+
+    std_Map10.erase(std_itlow,std_itup);        // erases [std_itlow,std_itup)
+
+
+    for (std::map<char,int>::iterator itMap = std_Map10.begin(); itMap != std_Map10.end(); ++itMap)
         std::cout << itMap->first << " => " << itMap->second << '\n';
     std::cout << "\033[0m";
     std::cout << "\033[32;1mFT MAP EQUAL_RANGE FUNCTION TEST:\033[0m" << "\033[36;1m" <<std::endl;
@@ -527,14 +640,30 @@ int main(void)
     ft_Map11['b'] = 20;
     ft_Map11['c'] = 30;
 
-    ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
-    ret = ft_Map11.equal_range('b');
+    ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ft_ret;
+    ft_ret = ft_Map11.equal_range('b');
 
     std::cout << "lower bound points to: ";
-    std::cout << ret.first->first << " => " << ret.first->second << '\n';
+    std::cout << ft_ret.first->first << " => " << ft_ret.first->second << '\n';
 
     std::cout << "upper bound points to: ";
-    std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    std::cout << ft_ret.second->first << " => " << ft_ret.second->second << '\n';
+    std::cout << "\033[0m";
+    std::cout << "\033[35;1mSTANDARD MAP EQUAL_RANGE FUNCTION TEST:\033[0m" << "\033[32;1m" <<std::endl;
+    std::map<char,int> std_Map11;
+
+    std_Map11['a'] = 10;
+    std_Map11['b'] = 20;
+    std_Map11['c'] = 30;
+
+    std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> std_ret;
+    std_ret = std_Map11.equal_range('b');
+
+    std::cout << "lower bound points to: ";
+    std::cout << std_ret.first->first << " => " << std_ret.first->second << '\n';
+
+    std::cout << "upper bound points to: ";
+    std::cout << std_ret.second->first << " => " << std_ret.second->second << '\n';
     std::cout << "\033[0m";
     return (0);
 }

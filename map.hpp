@@ -58,9 +58,9 @@ namespace ft {
 		class iterator : public virtual bidirectional_iterator<pair<key_type, mapped_type> > {
 		public:
 		    friend class map;
-			typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	reference;
-			typedef typename base_iterator<pair<key_type, mapped_type> >::distance	distance;
-			typedef typename base_iterator<pair<key_type, mapped_type> >::pointer	pointer;
+			typedef	typename base_iterator<pair<key_type, mapped_type> >::reference	    reference;
+			typedef typename base_iterator<pair<key_type, mapped_type> >::distance	    distance;
+			typedef typename base_iterator<pair<key_type, mapped_type> >::pointer	    pointer;
 
 			iterator() : _iterHead(0x0) { }
 			iterator(const iterator &rhs) {
@@ -84,8 +84,8 @@ namespace ft {
 			    this->_iterHead = const_cast<map *>(rhs);
 			    return (*this);
 			}
-			reference															operator*() { return (*(this->_ptr)); }
-			pointer																operator->() { return (this->_ptr); }
+			virtual reference													operator*() { return (*(this->_ptr)); }
+			virtual pointer														operator->() { return (this->_ptr); }
 			virtual base_iterator<pair<key_type, mapped_type> >					&operator++() {
 				map 								*mapFound = 0x0;
 
@@ -173,9 +173,9 @@ namespace ft {
 		        this->_iterHead = const_cast<map *>(rhs);
 		        return (*this);
 		    }
-		    reference															operator*() { return (*(this->_ptr)); }
-		    pointer																operator->() { return (this->_ptr); }
-		    virtual base_iterator<pair<key_type, mapped_type> >					&operator++() {
+		    virtual reference															operator*() { return (*(this->_ptr)); }
+		    virtual pointer																operator->() { return (this->_ptr); }
+		    virtual base_iterator<pair<key_type, mapped_type> >					        &operator++() {
 		        map 								*mapFound = 0x0;
 
 		        vector<map<key_type, mapped_type> *> ret = _iterHead->iterativeInorder(_iterHead->_head);
@@ -431,7 +431,7 @@ namespace ft {
 		}
 		bool 								empty() const { return (!_size); }
 		size_type 							size() const { return (_size); }
-		size_type 							max_size() const { return ( _alloc.max_size() / sizeof(pair<Key, T> *)); }
+		size_type 							max_size() const { return ( _alloc.max_size());  }
 		mapped_type							&operator[](const key_type &k) {
 			map	*tmp = 0x0;
 			map	*res = 0x0;
@@ -589,7 +589,6 @@ namespace ft {
 		}
 		iterator								lower_bound(const key_type &k) {
 			for (iterator it = begin(); it != end(); ++it) {
-				//pair<key_type, mapped_type>	tmp = *it;
 				if (!(_comp(it->first, k)))
 				    return (it);
 			}
@@ -598,7 +597,6 @@ namespace ft {
 		const_iterator							lower_bound(const key_type &k) const {
 
 			for (iterator it = begin(); it != end(); ++it) {
-				//pair<key_type, mapped_type>	tmp = *it;
 				if (!(_comp(it->first, k)))
 				    return (it);
 			}
@@ -606,7 +604,6 @@ namespace ft {
 		}
 		iterator								upper_bound(const key_type &k) {
 			for (iterator it = begin(); it != end(); ++it) {
-				//pair<key_type, mapped_type>	tmp = *it;
 				if (!(_comp(it->first, k))) {
 				    ++it;
 				    return (it);
@@ -616,7 +613,6 @@ namespace ft {
 		}
 		const_iterator							upper_bound(const key_type &k) const {
 			for (iterator it = begin(); it != end(); ++it) {
-				//pair<key_type, mapped_type>	tmp = *it;
 				if (!(_comp(it->first, k))) {
 				    ++it;
 				    return (it);

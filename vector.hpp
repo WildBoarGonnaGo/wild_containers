@@ -39,8 +39,8 @@ namespace ft
 				this->_ptr = rhs;
 				return (*this);
 			}
-			reference		operator*() { return (*this->_ptr); }
-			//const reference	operator*() const { return (*this->_ptr); }
+			virtual reference		operator*() { return (*this->_ptr); }
+			virtual pointer         operator->() { return (this->_ptr); }
 			iterator		&operator+=(distance n) {
 				distance m = n;
 				if (m >= 0) {
@@ -53,7 +53,6 @@ namespace ft
 				}
 				return (*this);
 			}
-			//iterator        operator+(const pointer rhs) { return ()}
 			pointer        &operator+=(const pointer &rhs) {
 				while (this->_ptr != rhs)
 					++this->_ptr;
